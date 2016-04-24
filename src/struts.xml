@@ -16,6 +16,13 @@
             </result>  
         </action>
         
+        <action name="getSign" class="web.GetSignAction" method="Sign"> 
+            <result name="success" type="json" >  
+                   <param name="includeProperties">sign</param>
+                   <param name="ignoreHierarchy">false</param>
+            </result>  
+        </action>
+        
     </package>
 
 </struts>    
