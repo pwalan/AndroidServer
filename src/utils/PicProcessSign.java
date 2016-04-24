@@ -3,6 +3,11 @@ package utils;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.HmacUtils;
 
+/**
+ * 计算签名
+ * @author AlanP
+ *
+ */
 public class PicProcessSign {
     public static String getSign(int appId, String secret_id,String secret_key, 
                 String bucket,

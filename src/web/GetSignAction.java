@@ -20,6 +20,9 @@ public class GetSignAction extends ActionSupport{
 	
 	private PicProcessSign picSign;
 	
+	public void setPicSign(PicProcessSign picSign) {
+		this.picSign = picSign;
+	}
 
 	public int getAppid() {
 		return appid;
@@ -61,14 +64,6 @@ public class GetSignAction extends ActionSupport{
 		this.expired = expired;
 	}
 
-	public PicProcessSign getPicSign() {
-		return picSign;
-	}
-
-	public void setPicSign(PicProcessSign picSign) {
-		this.picSign = picSign;
-	}
-
 	public String getSign() {
 		return sign;
 	}
@@ -87,7 +82,6 @@ public class GetSignAction extends ActionSupport{
 		setBucket("pwalan");
 		setExpired(System.currentTimeMillis() / 1000 + 2592000);
 		
-		picSign=new PicProcessSign();
 		setSign(picSign.getSign(appid, secretId, secretKey, bucket, expired));
 		System.out.println("sign: "+sign);
 		return SUCCESS;

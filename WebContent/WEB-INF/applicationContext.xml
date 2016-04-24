@@ -56,6 +56,8 @@
 	<bean id="userService" class="service.UserService" >
 		<property name="userDao" ref="userDao"/>
 	</bean>
+	
+	<bean id="picSign" class="utils.PicProcessSign" />
 
 	
 	<!-- 配置Hibernate的局部事务管理器，使用HibernateTransactionManager类 -->
