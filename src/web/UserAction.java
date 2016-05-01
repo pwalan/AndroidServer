@@ -72,6 +72,31 @@ public class UserAction extends ActionSupport{
 				setStatus("succeed");
 			}
 		}
+		setUsername(null);
+		setPasswd(null);
+		return SUCCESS;
+	}
+	
+	/**
+	 * 注册
+	 */
+	public String register(){
+		setUsername(getUsername());
+		setPasswd(getPasswd());
+		setHead(getHead());
+		System.out.println(username+" with "+passwd+" head:"+head);
+		
+		if(username==null||passwd==null){
+			setStatus("failed");
+		}else{
+			if(userService.Register(username, passwd, head)){
+				setStatus("succeed");
+			}else{
+				setStatus("failed");
+			}
+		}	
+		setUsername(null);
+		setPasswd(null);
 		return SUCCESS;
 	}
 	

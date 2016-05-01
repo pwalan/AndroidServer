@@ -29,4 +29,14 @@ public class UserService {
 		}
 		return 0;
 	}
+	
+	public boolean Register(String username, String passwd, String head){
+		List<User> userlist=userDao.queryByUserName(username);
+		if(userlist.size()>0){
+			return false;
+		}else{
+			userDao.save(new User(username, passwd, 1, head));
+			return true;
+		}
+	}
 }
