@@ -72,8 +72,6 @@ public class UserAction extends ActionSupport{
 				setStatus("succeed");
 			}
 		}
-		setUsername(null);
-		setPasswd(null);
 		return SUCCESS;
 	}
 	
@@ -95,8 +93,6 @@ public class UserAction extends ActionSupport{
 				setStatus("failed");
 			}
 		}	
-		setUsername(null);
-		setPasswd(null);
 		return SUCCESS;
 	}
 	
