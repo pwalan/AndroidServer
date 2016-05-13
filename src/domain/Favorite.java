@@ -6,42 +6,54 @@ public class Favorite {
     
 	private int uid;
     
-	private int rid;
-    
+	private int cid;
+   
 	private String time;
     
 	public Favorite(){
 		super();
 	}
-	public Favorite(int id,int uid,int rid,String time){
+	
+	
+	public Favorite(int uid, int cid, String time) {
 		super();
-		this.setId(rid);
-		this.setRid(rid);
-		this.setTime(time);
-		this.setUid(uid);
+		this.uid = uid;
+		this.cid = cid;
+		this.time = time;
 	}
+
+
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
+
 	public int getUid() {
 		return uid;
 	}
+
 	public void setUid(int uid) {
 		this.uid = uid;
 	}
-	public int getRid() {
-		return rid;
+
+	public int getCid() {
+		return cid;
 	}
-	public void setRid(int rid) {
-		this.rid = rid;
+
+	public void setCid(int cid) {
+		this.cid = cid;
 	}
+
 	public String getTime() {
 		return time;
 	}
+
 	public void setTime(String time) {
 		this.time = time;
 	}
+	
+	
 }

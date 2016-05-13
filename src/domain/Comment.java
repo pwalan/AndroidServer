@@ -13,9 +13,8 @@ public class Comment {
 	public Comment(){
 		super();
 	}
-	public Comment(int id,int uid,String content,String time){
+	public Comment(int uid,String content,String time){
 		super();
-		this.id=id;
 		this.uid=uid;
 		this.content=content;
 		this.time=time;

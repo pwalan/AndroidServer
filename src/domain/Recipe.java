@@ -13,54 +13,36 @@ public class Recipe {
 	private boolean isAudit;
 	private boolean auditResult;
 	private String auditTime;
-	public Recipe(){
+	private String content;
+	
+	public Recipe() {
 		super();
 	}
-	public Recipe(int rid,int uid,String season,String cuisine,String rname,
-			String info,String uptime,String pic,int aid,boolean isAudit,boolean auditResult,String auditTime){
+	
+	public Recipe(int uid, String season, String cuisine, String info, String rname, String uptime, String pic, int aid,
+			boolean isAudit, boolean auditResult, String auditTime, String content) {
 		super();
-		this.setRid(rid);
-		this.setUid(uid);
-		this.setSeason(season);
-		this.setCuisine(cuisine);
-		this.setRname(rname);
-		this.setPic(pic);
-		this.setInfo(info);
-		this.setUptime(uptime);
-		this.setAudit(isAudit);
-		this.setAid(aid);
-		this.setAuditResult(auditResult);
-		this.setAuditTime(auditTime);
+		this.uid = uid;
+		this.season = season;
+		this.cuisine = cuisine;
+		this.info = info;
+		this.rname = rname;
+		this.uptime = uptime;
+		this.pic = pic;
+		this.aid = aid;
+		this.isAudit = isAudit;
+		this.auditResult = auditResult;
+		this.auditTime = auditTime;
+		this.content = content;
 	}
+
+
+
 	public int getRid() {
 		return rid;
 	}
 	public void setRid(int rid) {
 		this.rid = rid;
-	}
-	public String getSeason() {
-		return season;
-	}
-	public void setSeason(String season) {
-		this.season = season;
-	}
-	public String getRname() {
-		return rname;
-	}
-	public void setRname(String rname) {
-		this.rname = rname;
-	}
-	public String getPic() {
-		return pic;
-	}
-	public void setPic(String pic) {
-		this.pic = pic;
-	}
-	public boolean isAudit() {
-		return isAudit;
-	}
-	public void setAudit(boolean isAudit) {
-		this.isAudit = isAudit;
 	}
 	public int getUid() {
 		return uid;
@@ -68,11 +50,11 @@ public class Recipe {
 	public void setUid(int uid) {
 		this.uid = uid;
 	}
-	public String getInfo() {
-		return info;
+	public String getSeason() {
+		return season;
 	}
-	public void setInfo(String info) {
-		this.info = info;
+	public void setSeason(String season) {
+		this.season = season;
 	}
 	public String getCuisine() {
 		return cuisine;
@@ -80,11 +62,29 @@ public class Recipe {
 	public void setCuisine(String cuisine) {
 		this.cuisine = cuisine;
 	}
+	public String getInfo() {
+		return info;
+	}
+	public void setInfo(String info) {
+		this.info = info;
+	}
+	public String getRname() {
+		return rname;
+	}
+	public void setRname(String rname) {
+		this.rname = rname;
+	}
 	public String getUptime() {
 		return uptime;
 	}
 	public void setUptime(String uptime) {
 		this.uptime = uptime;
+	}
+	public String getPic() {
+		return pic;
+	}
+	public void setPic(String pic) {
+		this.pic = pic;
 	}
 	public int getAid() {
 		return aid;
@@ -92,7 +92,13 @@ public class Recipe {
 	public void setAid(int aid) {
 		this.aid = aid;
 	}
-	public boolean isAuditResult() {
+	public boolean getisAudit() {
+		return isAudit;
+	}
+	public void setisAudit(boolean isAudit) {
+		this.isAudit = isAudit;
+	}
+	public boolean getAuditResult() {
 		return auditResult;
 	}
 	public void setAuditResult(boolean auditResult) {
@@ -104,4 +110,12 @@ public class Recipe {
 	public void setAuditTime(String auditTime) {
 		this.auditTime = auditTime;
 	}
+	public String getContent() {
+		return content;
+	}
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	
 }
