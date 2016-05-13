@@ -20,7 +20,7 @@
             <column name="content" length="65535" />
         </property>
         <property name="pic" type="java.lang.String">
-            <column name="pic" length="100" />
+            <column name="pic"/>
         </property>
         <property name="uptime" type="java.sql.Timestamp">
             <column name="uptime" length="19" />
