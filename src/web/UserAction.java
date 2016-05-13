@@ -95,5 +95,4 @@ public class UserAction extends ActionSupport{
 		}	
 		return SUCCESS;
 	}
-	
 }
