@@ -10,41 +10,18 @@
             <column name="rid" />
             <generator class="identity" />
         </id>
-        <property name="uid" type="java.lang.Integer">
-            <column name="uid" not-null="true" />
-        </property>
-        <property name="rname" type="java.lang.String">
-            <column name="rname" length="40" />
-        </property>
-        <property name="content" type="java.lang.String">
-            <column name="content" length="65535" />
-        </property>
-        <property name="pic" type="java.lang.String">
-            <column name="pic"/>
-        </property>
-        <property name="uptime" type="java.sql.Timestamp">
-            <column name="uptime" length="19" />
-        </property>
-        <property name="season" type="java.lang.String">
-            <column name="season" length="10" />
-        </property>
-        <property name="cuisine" type="java.lang.String">
-            <column name="cuisine" length="40" />
-        </property>
-        <property name="info" type="java.lang.String">
-            <column name="info" length="65535" />
-        </property>
-        <property name="aid" type="java.lang.Integer">
-            <column name="aid" />
-        </property>
-        <property name="isAudit" type="java.lang.String">
-            <column name=" isAudit" />
-        </property>
-        <property name="auditResult" type="java.lang.Integer">
-            <column name="auditResult" />
-        </property>
-        <property name="auditTime" type="java.sql.Timestamp">
-            <column name="auditTime" length="19" />
-        </property>
+        <property name="uid" column="uid" />
+        <property name="season" column="season" />
+        <property name="cuisine" column="cuisine" />
+        <property name="info" column="info" />
+        <property name="rname" column="rname" />
+        <property name="uptime" column="uptime" />
+        <property name="pic" column="pic" />
+        <property name="aid" column="aid" />
+        <property name="isAudit" column="isAudit" />
+        <property name="auditResult" column="auditResult" />
+        <property name="auditTime" column="auditTime" />
+        <property name="content" column="content" />
+        
     </class>
 </hibernate-mapping>

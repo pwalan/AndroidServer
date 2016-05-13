@@ -18,7 +18,7 @@
 		<!-- 指定连接数据库的驱动 -->
 		<property name="driverClass" value="com.mysql.jdbc.Driver"/>
 		<!-- 指定连接数据库的URL -->
-		<property name="jdbcUrl" value="jdbc:mysql://pwalan.cn:3306/food"/>
+		<property name="jdbcUrl" value="jdbc:mysql://pwalan.cn:3306/food?useUnicode=true&amp;characterEncoding=utf-8"/>
 		<!-- 指定连接数据库的用户名 -->
 		<property name="user" value="root"/>
 		<!-- 指定连接数据库的密码 -->
@@ -53,7 +53,21 @@
 	    <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="recipeDao" class="dao.RecipeDao">
+		    <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="stepsDao" class="dao.StepsDao">
+		    <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<bean id="userService" class="service.UserService" >
+		<property name="userDao" ref="userDao"/>
+	</bean>
+	
+	<bean id="recipeService" class="service.RecipeService" >
+		<property name="recipeDao" ref="recipeDao"/>
+		<property name="stepsDao" ref="stepsDao"/>
 		<property name="userDao" ref="userDao"/>
 	</bean>
 	

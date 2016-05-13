@@ -6,6 +6,11 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import domain.User;
 
+/**
+ * 都用户信息操作的实现
+ * @author AlanP
+ *
+ */
 public class UserDao extends HibernateDaoSupport{
 	public List<User> queryByUserName(String username) {
 		return (List<User>)getHibernateTemplate()
