@@ -11,7 +11,7 @@
         
         <action name="login" class="web.UserAction" method="login"> 
             <result name="success" type="json" >  
-                   <param name="includeProperties">status,uid</param>
+                   <param name="includeProperties">status,uid,head</param>
                    <param name="ignoreHierarchy">false</param>
             </result>  
         </action>

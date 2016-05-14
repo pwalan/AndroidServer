@@ -56,8 +56,10 @@ public class RecipeService {
 			ja_steps.add(jo);
 		}
 		//获取菜谱详情
-		jo_details.put("pic", recipe.getPic());
+		jo_details.put("rid", recipe.getRid());
+		jo_details.put("rpic", recipe.getPic());
 		jo_details.put("head", user.getHead());
+		jo_details.put("uid", user.getUid());
 		jo_details.put("username", user.getUsername());
 		jo_details.put("info", recipe.getInfo());
 		jo_details.put("steps", ja_steps.toString());

@@ -17,17 +17,18 @@ public class UserService {
 		this.userDao = userDao;
 	}
 
-	public int Login(String username, String passwd){
+	public User Login(String username, String passwd){
 		List<User> userlist=userDao.queryByUserName(username);
+		User user=new User();
 		if(userlist==null){
-			return 0;
+			return user;
 		}else{
-			User user=userlist.get(0);
+			user=userlist.get(0);
 			if(user.getPasswd().equals(passwd)){
-				return user.getUid();
+				return user;
 			}
 		}
-		return 0;
+		return user;
 	}
 	
 	public boolean Register(String username, String passwd, String head){

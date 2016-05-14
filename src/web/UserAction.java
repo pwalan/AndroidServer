@@ -2,6 +2,7 @@ package web;
 
 import com.opensymphony.xwork2.ActionSupport;
 
+import domain.User;
 import service.UserService;
 
 /**
@@ -64,12 +65,17 @@ public class UserAction extends ActionSupport{
 		if(username == null || passwd == null) {
 			setStatus("failed");
 			setUid(0);
+			setHead("");
 		}else{
-			uid=userService.Login(username, passwd);
-			if(uid==0){
+			User user=userService.Login(username, passwd);
+			if(user==null){
 				setStatus("faild");
+				setUid(0);
+				setHead("");
 			}else{
 				setStatus("succeed");
+				setUid(user.getUid());
+				setHead(user.getHead());
 			}
 		}
 		return SUCCESS;
