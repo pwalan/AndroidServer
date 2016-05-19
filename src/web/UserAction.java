@@ -16,6 +16,7 @@ public class UserAction extends ActionSupport{
 	private String passwd;
 	private String head;
 	private String status;
+	private String data;
 	
 	private UserService userService;
 	
@@ -54,6 +55,14 @@ public class UserAction extends ActionSupport{
 		this.status = status;
 	}
 	
+	public String getData() {
+		return data;
+	}
+
+	public void setData(String data) {
+		this.data = data;
+	}
+
 	/**
 	 * 登录
 	 */
@@ -99,6 +108,15 @@ public class UserAction extends ActionSupport{
 				setStatus("failed");
 			}
 		}	
+		return SUCCESS;
+	}
+	
+	/**
+	 * 获取有效收藏
+	 */
+	public String getFavorites(){
+		setUid(getUid());
+		setData(userService.getFarovites(uid));
 		return SUCCESS;
 	}
 }

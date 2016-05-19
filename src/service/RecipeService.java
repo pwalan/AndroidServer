@@ -4,6 +4,7 @@ import java.util.List;
 import dao.RecipeDao;
 import dao.StepsDao;
 import dao.UserDao;
+import domain.Comment;
 import domain.Recipe;
 import domain.Steps;
 import domain.User;
@@ -20,6 +21,7 @@ public class RecipeService {
 	private RecipeDao recipeDao;
 	private StepsDao stepsDao;
 	private UserDao userDao;
+	private Comment commentDao;
 
 	public void setRecipeDao(RecipeDao recipeDao) {
 		this.recipeDao = recipeDao;
@@ -31,6 +33,10 @@ public class RecipeService {
 
 	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
+	}
+
+	public void setCommentDao(Comment commentDao) {
+		this.commentDao = commentDao;
 	}
 
 	public String getSteps(String rname){

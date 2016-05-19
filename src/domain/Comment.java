@@ -10,14 +10,19 @@ public class Comment {
 	private String content;
 	
 	private String time;
+	
+	private String isValid;
+	
 	public Comment(){
 		super();
 	}
-	public Comment(int uid,String content,String time){
+	
+	public Comment(int uid,String content,String time,String isValid){
 		super();
 		this.uid=uid;
 		this.content=content;
 		this.time=time;
+		this.isValid=isValid;
 		
 	}
 	public int getId() {
@@ -50,4 +55,13 @@ public class Comment {
 	public void setTime(String time) {
 		this.time = time;
 	}
+
+	public String getIsValid() {
+		return isValid;
+	}
+
+	public void setIsValid(String isValid) {
+		this.isValid = isValid;
+	}
+	
 }

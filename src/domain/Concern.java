@@ -9,15 +9,18 @@ public class Concern {
 	   
 	 private String time;
 	 
+	 private String isValid;
+	 
 	 public Concern(){
 		 super();
 	 }
-	 public Concern(int id, int uid,int cid,String time ) {
+	 public Concern(int id, int uid,int cid,String time,String isValid) {
 			super();
 			this.id = id;
 			this.uid = uid;
 			this.cid=cid;
 			this.time=time;
+			this.isValid=isValid;
 		}
 	 public int getId() {
 			return id;
@@ -44,4 +47,11 @@ public class Concern {
 		public void setTime(String time) {
 			this.time = time;
 		}
+		public String getIsValid() {
+			return isValid;
+		}
+		public void setIsValid(String isValid) {
+			this.isValid = isValid;
+		}
+		
 }

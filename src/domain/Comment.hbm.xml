@@ -22,5 +22,6 @@
         <property name="time" type="java.sql.Timestamp">
             <column name="time" length="19" />
         </property>
+        <property name="isValid" column="isValid" />
     </class>
 </hibernate-mapping>

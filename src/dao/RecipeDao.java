@@ -21,6 +21,10 @@ public class RecipeDao extends HibernateDaoSupport{
 				.find("from Recipe r where r.rid=?", rid);
 	}
 	
+	public Recipe get(int rid){
+		return getHibernateTemplate().get(Recipe.class,rid);
+	}
+	
 	public Integer save(Recipe recipe) {
 		return (Integer)getHibernateTemplate().save(recipe);
 	}
