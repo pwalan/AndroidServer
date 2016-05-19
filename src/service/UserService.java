@@ -83,18 +83,41 @@ public class UserService {
 	}
 	
 	/**
-	 * 添加收藏
+	 * 添加/取消收藏
 	 * 
 	 */
 	public String addFavorite(int uid, int rid){
+		//获取当前时间
+		java.util.Date dt = new java.util.Date();
+		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String current = sdf.format(dt);
+		
 		List<Favorite> flist=favoriteDao.QueryByUidAndRid(uid, rid);
-		return "add";
+		if(flist.size()>0){
+			if(flist.get(0).getIsValid().equals("1")){
+				Favorite favorite=flist.get(0);
+				favorite.setIsValid("0");
+				favorite.setTime(current);
+				favoriteDao.update(favorite);
+				return "cancle";
+			}else{
+				Favorite favorite=flist.get(0);
+				favorite.setIsValid("1");
+				favorite.setTime(current);
+				favoriteDao.update(favorite);
+				return "add";
+			}
+		}else{
+			Favorite favorite=new Favorite(uid,rid,current,"1");
+			favoriteDao.save(favorite);
+			return "add";
+		}
 	}
 	
 	/**
 	 * 获取有效收藏
 	 */
-	public String getFarovites(int uid){
+	public String getFavorites(int uid){
 		List<Favorite> flist=favoriteDao.QueryByUid(uid);
 		Recipe recipe=new Recipe();
 		JSONArray ja_favorite=new JSONArray();
@@ -103,6 +126,7 @@ public class UserService {
 			if(flist.get(i).getIsValid().equals("1")){
 				recipe=recipeDao.get(flist.get(i).getRid());
 				jo.put("rname", recipe.getRname());
+				jo.put("time", flist.get(i).getTime());
 				jo.put("pic", recipe.getPic());
 				ja_favorite.add(jo);
 			}

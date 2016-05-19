@@ -12,6 +12,7 @@ import service.UserService;
  */
 public class UserAction extends ActionSupport{
 	private int uid;
+	private int rid;
 	private String username;
 	private String passwd;
 	private String head;
@@ -30,6 +31,15 @@ public class UserAction extends ActionSupport{
 	public void setUid(int uid) {
 		this.uid = uid;
 	}
+	
+	public int getRid() {
+		return rid;
+	}
+
+	public void setRid(int rid) {
+		this.rid = rid;
+	}
+
 	public String getUsername() {
 		return username;
 	}
@@ -112,11 +122,21 @@ public class UserAction extends ActionSupport{
 	}
 	
 	/**
+	 * 添加收藏
+	 */
+	public String addFavorite(){
+		setUid(getUid());
+		setRid(getRid());
+		setData(userService.addFavorite(uid, rid));
+		return SUCCESS;
+	}
+	
+	/**
 	 * 获取有效收藏
 	 */
 	public String getFavorites(){
 		setUid(getUid());
-		setData(userService.getFarovites(uid));
+		setData(userService.getFavorites(uid));
 		return SUCCESS;
 	}
 }
