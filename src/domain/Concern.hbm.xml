@@ -10,15 +10,9 @@
             <column name="id" />
             <generator class="identity" />
         </id>
-        <property name="uid" type="java.lang.Integer">
-            <column name="uid" not-null="true" />
-        </property>
-        <property name="cid" type="java.lang.Integer">
-            <column name="cid" not-null="true" />
-        </property>
-        <property name="time" type="java.sql.Timestamp">
-            <column name="time" length="19" />
-        </property>
+        <property name="uid" column="uid" />
+        <property name="cid" column="cid" />
+        <property name="time" column="time" />
         <property name="isValid" column="isValid" />
     </class>
 </hibernate-mapping>

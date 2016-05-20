@@ -40,7 +40,9 @@ public class Concern {
 
 		public void setCid(int cid) {
 			this.cid = cid;
-		}public String getTime() {
+		}
+		
+		public String getTime() {
 			return time;
 		}
 

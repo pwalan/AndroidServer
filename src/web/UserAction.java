@@ -139,4 +139,13 @@ public class UserAction extends ActionSupport{
 		setData(userService.getFavorites(uid));
 		return SUCCESS;
 	}
+	
+	/**
+	 * 获取发布及关注数
+	 */
+	public String getUserUp(){
+		setUid(getUid());
+		setData(userService.getUserUp(uid));
+		return SUCCESS;
+	}
 }

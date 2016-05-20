@@ -44,6 +44,13 @@
             </result>  
         </action>
         
+        <action name="getUserUp" class="web.UserAction" method="getUserUp"> 
+            <result name="success" type="json" >  
+                   <param name="includeProperties">data</param>
+                   <param name="ignoreHierarchy">false</param>
+            </result>
+        </action>
+        
         <action name="getSign" class="web.GetSignAction" method="Sign"> 
             <result name="success" type="json" >  
                    <param name="includeProperties">sign</param>

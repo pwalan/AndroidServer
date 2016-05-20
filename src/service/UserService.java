@@ -7,6 +7,7 @@ import dao.ConcernDao;
 import dao.FavoriteDao;
 import dao.RecipeDao;
 import dao.UserDao;
+import domain.Concern;
 import domain.Favorite;
 import domain.Recipe;
 import domain.User;
@@ -135,4 +136,27 @@ public class UserService {
 		
 	}
 	
+	/**
+	 * 获取发布及关注数
+	 */
+	public String getUserUp(int uid){
+		JSONObject jo_up=new JSONObject();
+		User user=userDao.get(uid);
+		List<Recipe> rlist=recipeDao.queryByUid(uid);
+		List<Concern> clist=concernDao.queryByCid(uid);
+		jo_up.put("username", user.getUsername());
+		jo_up.put("head", user.getHead());
+		jo_up.put("conNum", clist.size());
+		jo_up.put("recNum", rlist.size());
+		//获取具体发布的菜谱
+		JSONArray ja=new JSONArray();
+		for(int i=0;i<rlist.size();i++){
+			JSONObject jo = new JSONObject();
+			jo.put("rname", rlist.get(i).getRname());
+			jo.put("pic", rlist.get(i).getPic());
+			ja.add(jo);
+		}
+		jo_up.put("ups", ja.toString());
+		return jo_up.toString();
+	}
 }

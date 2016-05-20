@@ -21,6 +21,11 @@ public class RecipeDao extends HibernateDaoSupport{
 				.find("from Recipe r where r.rid=?", rid);
 	}
 	
+	public List<Recipe> queryByUid(int uid) {
+		return (List<Recipe>)getHibernateTemplate()
+				.find("from Recipe r where r.uid=?", uid);
+	}
+	
 	public Recipe get(int rid){
 		return getHibernateTemplate().get(Recipe.class,rid);
 	}
