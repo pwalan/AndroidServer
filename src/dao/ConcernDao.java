@@ -21,6 +21,11 @@ public class ConcernDao extends HibernateDaoSupport{
 				.find("from Concern c where c.cid=?",cid);
 	}
 	
+	public List<Concern> queryByUidAndCid(int uid,int cid){
+		return (List<Concern>)getHibernateTemplate()
+				.find("from Concern c where c.uid="+uid+"and c.cid="+cid);
+	}
+	
 	public Integer save(Concern concern) {
 		return (Integer)getHibernateTemplate().save(concern);
 	}

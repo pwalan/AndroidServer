@@ -13,6 +13,7 @@ import service.UserService;
 public class UserAction extends ActionSupport{
 	private int uid;
 	private int rid;
+	private int cid;
 	private String username;
 	private String passwd;
 	private String head;
@@ -71,6 +72,14 @@ public class UserAction extends ActionSupport{
 
 	public void setData(String data) {
 		this.data = data;
+	}
+
+	public int getCid() {
+		return cid;
+	}
+
+	public void setCid(int cid) {
+		this.cid = cid;
 	}
 
 	/**
@@ -141,6 +150,25 @@ public class UserAction extends ActionSupport{
 	}
 	
 	/**
+	 * 添加关注
+	 */
+	public String addConcern(){
+		setUid(getUid());
+		setCid(getCid());
+		setData(userService.addConcern(uid, cid));
+		return SUCCESS;
+	}
+	
+	/**
+	 * 获取有效关注
+	 */
+	public String getConcern(){
+		setUid(getUid());
+		setData(userService.getConcern(uid));
+		return SUCCESS;
+	}
+	
+	/**
 	 * 获取发布及关注数
 	 */
 	public String getUserUp(){
@@ -148,4 +176,5 @@ public class UserAction extends ActionSupport{
 		setData(userService.getUserUp(uid));
 		return SUCCESS;
 	}
+	
 }

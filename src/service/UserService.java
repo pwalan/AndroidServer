@@ -13,6 +13,7 @@ import domain.Recipe;
 import domain.User;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import utils.Time;
 
 /**
  * 用户服务
@@ -88,28 +89,23 @@ public class UserService {
 	 * 
 	 */
 	public String addFavorite(int uid, int rid){
-		//获取当前时间
-		java.util.Date dt = new java.util.Date();
-		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		String current = sdf.format(dt);
-		
 		List<Favorite> flist=favoriteDao.QueryByUidAndRid(uid, rid);
 		if(flist.size()>0){
-			if(flist.get(0).getIsValid().equals("1")){
-				Favorite favorite=flist.get(0);
+			Favorite favorite=flist.get(0);
+			if(favorite.getIsValid().equals("1")){
 				favorite.setIsValid("0");
-				favorite.setTime(current);
+				favorite.setTime(Time.getNow());
 				favoriteDao.update(favorite);
 				return "cancle";
 			}else{
-				Favorite favorite=flist.get(0);
+				favorite=flist.get(0);
 				favorite.setIsValid("1");
-				favorite.setTime(current);
+				favorite.setTime(Time.getNow());
 				favoriteDao.update(favorite);
 				return "add";
 			}
 		}else{
-			Favorite favorite=new Favorite(uid,rid,current,"1");
+			Favorite favorite=new Favorite(uid,rid,Time.getNow(),"1");
 			favoriteDao.save(favorite);
 			return "add";
 		}
@@ -137,16 +133,65 @@ public class UserService {
 	}
 	
 	/**
-	 * 获取发布及关注数
+	 * 添加/取消关注
+	 */
+	public String addConcern(int uid,int cid){
+		List<Concern> clist=concernDao.queryByUidAndCid(uid,cid);
+		if(clist.size()>0){
+			Concern concern=clist.get(0);
+			if(concern.getIsValid().equals("1")){
+				concern.setIsValid("0");
+				concern.setTime(Time.getNow());
+				concernDao.update(concern);
+				return "cancle";
+			}else{
+				concern.setIsValid("1");
+				concern.setTime(Time.getNow());
+				concernDao.update(concern);
+				return "add";
+			}
+		}else{
+			Concern concern=new Concern(uid,cid,Time.getNow(),"1");
+			concernDao.save(concern);
+			return "add";
+		}
+	}
+	
+	/**
+	 * 获取有效关注
+	 */
+	public String getConcern(int uid){
+		List<Concern> clist=concernDao.queryByUid(uid);
+		JSONArray ja=new JSONArray();
+		for(int i=0;i<clist.size();i++){
+			JSONObject jo = new JSONObject();
+			Concern concern=clist.get(i);
+			User user=userDao.get(concern.getCid());
+			jo.put("cname", user.getUsername());
+			jo.put("time", concern.getTime());
+			jo.put("head", user.getHead());
+			ja.add(jo);
+		}
+		return ja.toString();
+	}
+	
+	/**
+	 * 获取用户一些信息（关注数、菜谱数、已发布的菜谱）
 	 */
 	public String getUserUp(int uid){
 		JSONObject jo_up=new JSONObject();
 		User user=userDao.get(uid);
+		int conNum=0;
 		List<Recipe> rlist=recipeDao.queryByUid(uid);
 		List<Concern> clist=concernDao.queryByCid(uid);
 		jo_up.put("username", user.getUsername());
 		jo_up.put("head", user.getHead());
-		jo_up.put("conNum", clist.size());
+		for(int i=0;i<clist.size();i++){
+			if(clist.get(i).getIsValid().equals("1")){
+				conNum++;
+			}
+		}
+		jo_up.put("conNum", conNum);
 		jo_up.put("recNum", rlist.size());
 		//获取具体发布的菜谱
 		JSONArray ja=new JSONArray();
@@ -154,6 +199,7 @@ public class UserService {
 			JSONObject jo = new JSONObject();
 			jo.put("rname", rlist.get(i).getRname());
 			jo.put("pic", rlist.get(i).getPic());
+			jo.put("time",rlist.get(i).getUptime());
 			ja.add(jo);
 		}
 		jo_up.put("ups", ja.toString());
