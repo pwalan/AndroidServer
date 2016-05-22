@@ -77,6 +77,7 @@ public class RecipeService {
 			jo.put("cname", cuser.getUsername());
 			jo.put("head", cuser.getHead());
 			jo.put("time", list_comments.get(i).getTime());
+			jo.put("content", list_comments.get(i).getContent());
 			ja_comments.add(jo);
 		}
 		
