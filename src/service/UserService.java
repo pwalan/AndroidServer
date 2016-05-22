@@ -11,6 +11,7 @@ import domain.Concern;
 import domain.Favorite;
 import domain.Recipe;
 import domain.User;
+import domain.Comment;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import utils.Time;
@@ -166,11 +167,14 @@ public class UserService {
 		for(int i=0;i<clist.size();i++){
 			JSONObject jo = new JSONObject();
 			Concern concern=clist.get(i);
-			User user=userDao.get(concern.getCid());
-			jo.put("cname", user.getUsername());
-			jo.put("time", concern.getTime());
-			jo.put("head", user.getHead());
-			ja.add(jo);
+			if(concern.getIsValid().equals("1")){
+				User user=userDao.get(concern.getCid());
+				jo.put("cid", user.getUid());
+				jo.put("cname", user.getUsername());
+				jo.put("time", concern.getTime());
+				jo.put("head", user.getHead());
+				ja.add(jo);
+			}
 		}
 		return ja.toString();
 	}
@@ -204,5 +208,13 @@ public class UserService {
 		}
 		jo_up.put("ups", ja.toString());
 		return jo_up.toString();
+	}
+	
+	/**
+	 * 发表评论
+	 */
+	public String makeComment(int uid, int rid, String comment){
+		commentDao.save(new Comment(uid,rid,comment,Time.getNow(),"1"));
+		return "add";
 	}
 }

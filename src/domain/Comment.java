@@ -17,9 +17,10 @@ public class Comment {
 		super();
 	}
 	
-	public Comment(int uid,String content,String time,String isValid){
+	public Comment(int uid,int rid,String content,String time,String isValid){
 		super();
 		this.uid=uid;
+		this.rid=rid;
 		this.content=content;
 		this.time=time;
 		this.isValid=isValid;

@@ -1,6 +1,8 @@
 package service;
 
 import java.util.List;
+
+import dao.CommentDao;
 import dao.RecipeDao;
 import dao.StepsDao;
 import dao.UserDao;
@@ -21,7 +23,7 @@ public class RecipeService {
 	private RecipeDao recipeDao;
 	private StepsDao stepsDao;
 	private UserDao userDao;
-	private Comment commentDao;
+	private CommentDao commentDao;
 
 	public void setRecipeDao(RecipeDao recipeDao) {
 		this.recipeDao = recipeDao;
@@ -35,10 +37,15 @@ public class RecipeService {
 		this.userDao = userDao;
 	}
 
-	public void setCommentDao(Comment commentDao) {
+	public void setCommentDao(CommentDao commentDao) {
 		this.commentDao = commentDao;
 	}
 
+	/**
+	 * 获取菜谱详情及相关评论
+	 * @param rname
+	 * @return
+	 */
 	public String getSteps(String rname){
 		System.out.println(rname);
 		JSONObject jo_details=new JSONObject();
@@ -50,8 +57,9 @@ public class RecipeService {
 		}
 		Recipe recipe=list_recipe.get(0);
 		List<Steps> list_steps=stepsDao.queryByRid(recipe.getRid());
+		List<Comment> list_comments=commentDao.queryByRid(recipe.getRid());
 		User user=userDao.queryByUid(recipe.getUid()).get(0);
-		//获得菜谱制作步骤
+		//获取菜谱制作步骤
 		JSONArray ja_steps=new JSONArray();
 		for(int i=0;i<list_steps.size();i++){
 			JSONObject jo = new JSONObject();
@@ -61,6 +69,17 @@ public class RecipeService {
 			
 			ja_steps.add(jo);
 		}
+		//获取菜谱评论
+		JSONArray ja_comments=new JSONArray();
+		for(int i=0;i<list_comments.size();i++){
+			JSONObject jo = new JSONObject();
+			User cuser=userDao.get(list_comments.get(i).getUid());
+			jo.put("cname", cuser.getUsername());
+			jo.put("head", cuser.getHead());
+			jo.put("time", list_comments.get(i).getTime());
+			ja_comments.add(jo);
+		}
+		
 		//获取菜谱详情
 		jo_details.put("rid", recipe.getRid());
 		jo_details.put("rpic", recipe.getPic());
@@ -69,6 +88,7 @@ public class RecipeService {
 		jo_details.put("username", user.getUsername());
 		jo_details.put("info", recipe.getInfo());
 		jo_details.put("steps", ja_steps.toString());
+		jo_details.put("comments", ja_comments.toString());
 		
 		return jo_details.toString();
 	}

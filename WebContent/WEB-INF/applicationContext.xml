@@ -85,6 +85,7 @@
 		<property name="recipeDao" ref="recipeDao"/>
 		<property name="stepsDao" ref="stepsDao"/>
 		<property name="userDao" ref="userDao"/>
+		<property name="commentDao" ref="commentDao"/>
 	</bean>
 	
 	<bean id="picSign" class="utils.PicProcessSign" />
