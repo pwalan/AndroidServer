@@ -30,6 +30,20 @@
             </result>  
         </action>
         
+        <action name="getHomeRecipes" class="web.RecipeAction" method="getHomeRecipes"> 
+            <result name="success" type="json" >  
+                   <param name="includeProperties">data</param>
+                   <param name="ignoreHierarchy">false</param>
+            </result>  
+        </action>
+        
+        <action name="getSeasonRecipes" class="web.RecipeAction" method="getSeasonRecipes"> 
+            <result name="success" type="json" >  
+                   <param name="includeProperties">data</param>
+                   <param name="ignoreHierarchy">false</param>
+            </result>  
+        </action>
+        
         <action name="addFavorite" class="web.UserAction" method="addFavorite"> 
             <result name="success" type="json" >  
                    <param name="includeProperties">data</param>

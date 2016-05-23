@@ -94,4 +94,35 @@ public class RecipeService {
 		return jo_details.toString();
 	}
 	
+	/**
+	 * 获取首页推荐菜谱
+	 */
+	public String getHomeRecipes(){
+		List<Recipe> rlist=recipeDao.queryAll();
+		JSONArray ja=new JSONArray();
+		for(int i=0;i<rlist.size();i++){
+			JSONObject jo = new JSONObject();
+			Recipe recipe=rlist.get(i);
+			jo.put("rname", recipe.getRname());
+			jo.put("pic", recipe.getPic());
+			ja.add(jo);
+		}
+		return ja.toString();
+	}
+	
+	/**
+	 * 获取季节菜谱
+	 */
+	public String getSeasonRecipes(String season){
+		List<Recipe> rlist=recipeDao.queryBySeason(season);
+		JSONArray ja=new JSONArray();
+		for(int i=0;i<rlist.size();i++){
+			JSONObject jo = new JSONObject();
+			Recipe recipe=rlist.get(i);
+			jo.put("rname", recipe.getRname());
+			jo.put("pic", recipe.getPic());
+			ja.add(jo);
+		}
+		return ja.toString();
+	}
 }

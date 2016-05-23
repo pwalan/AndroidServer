@@ -11,6 +11,11 @@ import domain.Recipe;
  *
  */
 public class RecipeDao extends HibernateDaoSupport{
+	
+	public List<Recipe> queryAll(){
+		return (List<Recipe>)getHibernateTemplate().find("from Recipe");
+	}
+	
 	public List<Recipe> queryByRName(String rname) {
 		return (List<Recipe>)getHibernateTemplate()
 				.find("from Recipe r where r.rname=?", rname);
@@ -24,6 +29,11 @@ public class RecipeDao extends HibernateDaoSupport{
 	public List<Recipe> queryByUid(int uid) {
 		return (List<Recipe>)getHibernateTemplate()
 				.find("from Recipe r where r.uid=?", uid);
+	}
+	
+	public List<Recipe> queryBySeason(String season){
+		return (List<Recipe>)getHibernateTemplate()
+				.find("from Recipe r where r.season like '%"+season+"%'");
 	}
 	
 	public Recipe get(int rid){
