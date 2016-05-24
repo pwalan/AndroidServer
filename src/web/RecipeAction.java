@@ -6,10 +6,12 @@ import service.RecipeService;
 
 public class RecipeAction extends ActionSupport{
 	private int rid;
+	private int uid;
 	private String rname;
 	private String season;
 	private String data;
 	private RecipeService recipeService;
+	private String comment;
 	
 	public void setRecipeService(RecipeService recipeService) {
 		this.recipeService = recipeService;
@@ -38,6 +40,18 @@ public class RecipeAction extends ActionSupport{
 	public void setSeason(String season) {
 		this.season = season;
 	}
+	public int getUid() {
+		return uid;
+	}
+	public void setUid(int uid) {
+		this.uid = uid;
+	}
+	public String getComment() {
+		return comment;
+	}
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
 	/**
 	 * 获取菜谱制作步骤和相关评论
 	 */
@@ -61,6 +75,17 @@ public class RecipeAction extends ActionSupport{
 	public String getSeasonRecipes(){
 		setSeason(getSeason());
 		setData(recipeService.getSeasonRecipes(season));
+		return SUCCESS;
+	}
+	
+	/**
+	 * 发表评论
+	 */
+	public String makeComment(){
+		setUid(getUid());
+		setRid(getRid());
+		setComment(getComment());
+		setData(recipeService.makeComment(uid, rid, comment));
 		return SUCCESS;
 	}
 }

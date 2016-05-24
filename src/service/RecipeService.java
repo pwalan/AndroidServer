@@ -12,6 +12,7 @@ import domain.Steps;
 import domain.User;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import utils.Time;
 
 /**
  * 菜谱相关操作服务
@@ -124,5 +125,13 @@ public class RecipeService {
 			ja.add(jo);
 		}
 		return ja.toString();
+	}
+	
+	/**
+	 * 发表评论
+	 */
+	public String makeComment(int uid, int rid, String comment){
+		commentDao.save(new Comment(uid,rid,comment,Time.getNow(),"1"));
+		return "add";
 	}
 }

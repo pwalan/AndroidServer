@@ -19,7 +19,6 @@ public class UserAction extends ActionSupport{
 	private String head;
 	private String status;
 	private String data;
-	private String comment;
 	
 	private UserService userService;
 	
@@ -81,14 +80,6 @@ public class UserAction extends ActionSupport{
 
 	public void setCid(int cid) {
 		this.cid = cid;
-	}
-
-	public String getComment() {
-		return comment;
-	}
-
-	public void setComment(String comment) {
-		this.comment = comment;
 	}
 
 	/**
@@ -186,14 +177,4 @@ public class UserAction extends ActionSupport{
 		return SUCCESS;
 	}
 	
-	/**
-	 * 发表评论
-	 */
-	public String makeComment(){
-		setUid(getUid());
-		setRid(getRid());
-		setComment(getComment());
-		setData(userService.makeComment(uid, rid, comment));
-		return SUCCESS;
-	}
 }

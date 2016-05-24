@@ -210,11 +210,4 @@ public class UserService {
 		return jo_up.toString();
 	}
 	
-	/**
-	 * 发表评论
-	 */
-	public String makeComment(int uid, int rid, String comment){
-		commentDao.save(new Comment(uid,rid,comment,Time.getNow(),"1"));
-		return "add";
-	}
 }
