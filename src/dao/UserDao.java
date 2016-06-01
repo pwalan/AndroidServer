@@ -7,7 +7,7 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import domain.User;
 
 /**
- * 都用户信息操作的实现
+ * 对用户信息操作的实现
  * @author AlanP
  *
  */
