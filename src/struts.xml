@@ -19,7 +19,7 @@
         <global-results>
             <result name="error">/Error.jsp</result>
         </global-results>
-        
+        <!-- 用户相关操作 -->
         <action name="login" class="web.UserAction" method="login"> 
             <result name="success" type="json" >  
                    <param name="includeProperties">status,uid,head</param>
@@ -32,34 +32,6 @@
                    <param name="includeProperties">status</param>
                    <param name="ignoreHierarchy">false</param>
             </result>  
-        </action>
-        
-        <action name="getSteps" class="web.RecipeAction" method="getSteps"> 
-            <result name="success" type="json" >  
-                   <param name="includeProperties">data</param>
-                   <param name="ignoreHierarchy">false</param>
-            </result>  
-        </action>
-        
-        <action name="getHomeRecipes" class="web.RecipeAction" method="getHomeRecipes"> 
-            <result name="success" type="json" >  
-                   <param name="includeProperties">data</param>
-                   <param name="ignoreHierarchy">false</param>
-            </result>  
-        </action>
-        
-        <action name="getSeasonRecipes" class="web.RecipeAction" method="getSeasonRecipes"> 
-            <result name="success" type="json" >  
-                   <param name="includeProperties">data</param>
-                   <param name="ignoreHierarchy">false</param>
-            </result>  
-        </action>
-        
-        <action name="makeComment" class="web.RecipeAction" method="makeComment"> 
-            <result name="success" type="json" >  
-                   <param name="includeProperties">data</param>
-                   <param name="ignoreHierarchy">false</param>
-            </result>
         </action>
         
         <action name="addFavorite" class="web.UserAction" method="addFavorite"> 
@@ -98,12 +70,35 @@
         </action>
         
         
-        <action name="getSign" class="web.GetSignAction" method="Sign"> 
+        <!-- 菜谱相关的操作 -->
+        <action name="getSteps" class="web.RecipeAction" method="getSteps"> 
             <result name="success" type="json" >  
-                   <param name="includeProperties">sign</param>
+                   <param name="includeProperties">data</param>
                    <param name="ignoreHierarchy">false</param>
             </result>  
         </action>
+        
+        <action name="getHomeRecipes" class="web.RecipeAction" method="getHomeRecipes"> 
+            <result name="success" type="json" >  
+                   <param name="includeProperties">data</param>
+                   <param name="ignoreHierarchy">false</param>
+            </result>  
+        </action>
+        
+        <action name="getSeasonRecipes" class="web.RecipeAction" method="getSeasonRecipes"> 
+            <result name="success" type="json" >  
+                   <param name="includeProperties">data</param>
+                   <param name="ignoreHierarchy">false</param>
+            </result>  
+        </action>
+        
+        <action name="makeComment" class="web.RecipeAction" method="makeComment"> 
+            <result name="success" type="json" >
+                   <param name="includeProperties">data</param>
+                   <param name="ignoreHierarchy">false</param>
+            </result>
+        </action>
+        
         
     </package>
 
