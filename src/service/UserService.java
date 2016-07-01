@@ -210,4 +210,31 @@ public class UserService {
 		return jo_up.toString();
 	}
 	
+	/**
+	 * 修改密码
+	 * @param uid
+	 * @param passwd
+	 * @return
+	 */
+	public String changePasswd(int uid, String passwd){
+		User user=userDao.get(uid);
+		user.setPasswd(passwd);
+		userDao.update(user);
+		return "changed";
+	}
+	
+	/**
+	 * 更换头像
+	 * @param uid
+	 * @param head
+	 * @return
+	 */
+	public String changeHead(int uid, String head){
+		User user=userDao.get(uid);
+		user.setHead(head);
+		//http://pwalan-10035979.image.myqcloud.com/test_fileId_4fa53a5e-dea0-4cc4-be57-12fbf5f0e77d
+		userDao.update(user);
+		return "changed";
+	}
+	
 }

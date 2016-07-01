@@ -69,8 +69,22 @@
             </result>
         </action>
         
+        <action name="changePasswd" class="web.UserAction" method="changePasswd"> 
+            <result name="success" type="json" >  
+                   <param name="includeProperties">data</param>
+                   <param name="ignoreHierarchy">false</param>
+            </result>
+        </action>
         
-        <!-- 菜谱相关的操作 -->
+        <action name="changeHead" class="web.UserAction" method="changeHead"> 
+            <result name="success" type="json" >  
+                   <param name="includeProperties">data</param>
+                   <param name="ignoreHierarchy">false</param>
+            </result>
+        </action>
+        
+        
+        <!-- *************菜谱相关的操作************** -->
         <action name="getSteps" class="web.RecipeAction" method="getSteps"> 
             <result name="success" type="json" >  
                    <param name="includeProperties">data</param>

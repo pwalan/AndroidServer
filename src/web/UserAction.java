@@ -177,4 +177,26 @@ public class UserAction extends ActionSupport{
 		return SUCCESS;
 	}
 	
+	/**
+	 * 更改密码
+	 * @return
+	 */
+	public String changePasswd(){
+		setUid(getUid());
+		setPasswd(getPasswd());
+		setData(userService.changePasswd(uid, passwd));
+		return SUCCESS;
+	}
+	
+	/**
+	 * 更改头像
+	 * @return
+	 */
+	public String changeHead(){
+		setUid(getUid());
+		setHead(getHead());
+		setData(userService.changeHead(uid, head));
+		return SUCCESS;
+	}
+	
 }
