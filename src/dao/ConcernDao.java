@@ -13,7 +13,7 @@ import domain.Concern;
 public class ConcernDao extends HibernateDaoSupport{
 	public List<Concern> queryByUid(int uid){
 		return (List<Concern>)getHibernateTemplate()
-				.find("from Concern c where c.uid=?",uid);
+				.find("from Concern c where c.uid=? order by c.time desc",uid);
 	}
 	
 	public List<Concern> queryByCid(int cid){
