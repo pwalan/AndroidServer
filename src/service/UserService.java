@@ -256,8 +256,10 @@ public class UserService {
 			List<Squestion> slist=squestionDao.queryByUid(userlist.get(0).getUid());
 			if(slist.size()>0){
 				jo.put("question", slist.get(0).getQuestion());
+				return jo.toString();
 			}
 		}
+		jo.put("question", "failed");
 		return jo.toString();
 	}
 	
