@@ -28,7 +28,7 @@ public class RecipeDao extends HibernateDaoSupport{
 	
 	public List<Recipe> queryByUid(int uid) {
 		return (List<Recipe>)getHibernateTemplate()
-				.find("from Recipe r where r.uid=?", uid);
+				.find("from Recipe r where r.uid=? order by r.uptime desc", uid);
 	}
 	
 	public List<Recipe> queryBySeason(String season){

@@ -12,6 +12,10 @@ public class RecipeAction extends ActionSupport{
 	private String data;
 	private RecipeService recipeService;
 	private String comment;
+	private String pic;
+	private String rcontent;
+	private String stepCon;
+	private String stepUrl;
 	
 	public void setRecipeService(RecipeService recipeService) {
 		this.recipeService = recipeService;
@@ -52,6 +56,31 @@ public class RecipeAction extends ActionSupport{
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
+	public String getRcontent() {
+		return rcontent;
+	}
+	public void setRcontent(String rcontent) {
+		this.rcontent = rcontent;
+	}
+	public String getStepCon() {
+		return stepCon;
+	}
+	public void setStepCon(String stepCon) {
+		this.stepCon = stepCon;
+	}
+	public String getStepUrl() {
+		return stepUrl;
+	}
+	public void setStepUrl(String stepUrl) {
+		this.stepUrl = stepUrl;
+	}
+	public String getPic() {
+		return pic;
+	}
+	public void setPic(String pic) {
+		this.pic = pic;
+	}
+	
 	/**
 	 * 获取菜谱制作步骤和相关评论
 	 */
@@ -86,6 +115,21 @@ public class RecipeAction extends ActionSupport{
 		setRid(getRid());
 		setComment(getComment());
 		setData(recipeService.makeComment(uid, rid, comment));
+		return SUCCESS;
+	}
+	
+	/**
+	 * 上传菜谱
+	 */
+	public String upRecipe(){
+		setUid(getUid());
+		setRname(getRname());
+		setRcontent(getRcontent());
+		setPic(getPic());
+		setSeason(getSeason());
+		setStepCon(getStepCon());
+		setStepUrl(getStepUrl());
+		setData(recipeService.upRecipe(uid, rname, rcontent, pic, season, stepCon, stepUrl));
 		return SUCCESS;
 	}
 }

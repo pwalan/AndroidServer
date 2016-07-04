@@ -134,4 +134,32 @@ public class RecipeService {
 		commentDao.save(new Comment(uid,rid,comment,Time.getNow(),"1"));
 		return "add";
 	}
+	
+	/**
+	 * 上传菜谱
+	 * @param uid
+	 * @param rname
+	 * @param rcontent
+	 * @param pic
+	 * @param season
+	 * @param stepCon
+	 * @param stepUrl
+	 * @return
+	 */
+	public String upRecipe(int uid, String rname, String rcontent, String pic, String season,String stepCon, String stepUrl){
+		Recipe recipe=new Recipe(uid,season,"",rcontent,rname,Time.getNow(),pic,false);
+		recipeDao.update(recipe);
+		List<Recipe> list_recipe=recipeDao.queryByRName(rname);
+		if(list_recipe.size()>0){
+			Recipe recipetmp=list_recipe.get(0);
+			String[] sContents=stepCon.split(" ");
+			String[] sUrls=stepUrl.split(" ");
+			for(int i=0;i<sUrls.length;i++){
+				stepsDao.save(new Steps(recipetmp.getRid(),i+1,sUrls[i],sContents[i]));
+			}
+			return "add";
+		}else{
+			return "fail";
+		}
+	}
 }

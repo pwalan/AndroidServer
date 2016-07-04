@@ -19,8 +19,8 @@ public class Recipe {
 		super();
 	}
 	
-	public Recipe(int uid, String season, String cuisine, String info, String rname, String uptime, String pic, int aid,
-			boolean isAudit, boolean auditResult, String auditTime, String content) {
+	public Recipe(int uid, String season, String cuisine, String info, String rname, String uptime, String pic,
+			boolean isAudit) {
 		super();
 		this.uid = uid;
 		this.season = season;
@@ -29,11 +29,7 @@ public class Recipe {
 		this.rname = rname;
 		this.uptime = uptime;
 		this.pic = pic;
-		this.aid = aid;
 		this.isAudit = isAudit;
-		this.auditResult = auditResult;
-		this.auditTime = auditTime;
-		this.content = content;
 	}
 
 

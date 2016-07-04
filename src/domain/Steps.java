@@ -14,10 +14,9 @@ public class Steps {
 	public Steps(){
 		super();
 	}
-	public Steps(int rid,int id,int num,String pic,String content){
+	public Steps(int rid,int num,String pic,String content){
 		super();
 		this.setContent(content);
-		this.setId(id);
 		this.setNum(num);
 		this.setPic(pic);
 		this.setRid(rid);
