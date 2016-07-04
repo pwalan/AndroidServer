@@ -6,10 +6,12 @@ import dao.CommentDao;
 import dao.ConcernDao;
 import dao.FavoriteDao;
 import dao.RecipeDao;
+import dao.SquestionDao;
 import dao.UserDao;
 import domain.Concern;
 import domain.Favorite;
 import domain.Recipe;
+import domain.Squestion;
 import domain.User;
 import domain.Comment;
 import net.sf.json.JSONArray;
@@ -27,6 +29,7 @@ public class UserService {
 	private ConcernDao concernDao;
 	private FavoriteDao favoriteDao;
 	private RecipeDao recipeDao;
+	private SquestionDao squestionDao;
 
 	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
@@ -46,6 +49,10 @@ public class UserService {
 
 	public void setRecipeDao(RecipeDao recipeDao) {
 		this.recipeDao = recipeDao;
+	}
+
+	public void setSquestionDao(SquestionDao squestionDao) {
+		this.squestionDao = squestionDao;
 	}
 
 	/**
@@ -237,4 +244,37 @@ public class UserService {
 		return "changed";
 	}
 	
+	/**
+	 * 得到密保问题
+	 * @param username
+	 * @return
+	 */
+	public String getSquestion(String username){
+		JSONObject jo=new JSONObject();
+		List<User> userlist=userDao.queryByUserName(username);
+		if(userlist.size()>0){
+			List<Squestion> slist=squestionDao.queryByUid(userlist.get(0).getUid());
+			if(slist.size()>0){
+				jo.put("question", slist.get(0).getQuestion());
+			}
+		}
+		return jo.toString();
+	}
+	
+	/**
+	 * 找回密码
+	 * @param uid
+	 * @param answer
+	 * @return
+	 */
+	public String findPasswd(String username, String answer){
+		List<User> userlist=userDao.queryByUserName(username);
+		if(userlist.size()>0){
+			List<Squestion> slist=squestionDao.queryByUid(userlist.get(0).getUid());
+			if(slist.size()>0&&slist.get(0).getAnswer().equals(answer)){
+				return userlist.get(0).getPasswd();
+			}
+		}
+		return "failed";
+	}
 }

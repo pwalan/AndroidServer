@@ -73,12 +73,17 @@
 		    <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="squestionDao" class="dao.SquestionDao">
+		    <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<bean id="userService" class="service.UserService" >
 		<property name="userDao" ref="userDao"/>
 		<property name="commentDao" ref="commentDao"/>
 		<property name="concernDao" ref="concernDao"/>
 		<property name="favoriteDao" ref="favoriteDao"/>
 		<property name="recipeDao" ref="recipeDao"/>
+		<property name="squestionDao" ref="squestionDao" />
 	</bean>
 	
 	<bean id="recipeService" class="service.RecipeService" >

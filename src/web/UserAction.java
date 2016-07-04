@@ -19,6 +19,8 @@ public class UserAction extends ActionSupport{
 	private String head;
 	private String status;
 	private String data;
+	private String question;
+	private String answer;
 	
 	private UserService userService;
 	
@@ -80,6 +82,22 @@ public class UserAction extends ActionSupport{
 
 	public void setCid(int cid) {
 		this.cid = cid;
+	}
+
+	public String getQuestion() {
+		return question;
+	}
+
+	public void setQuestion(String question) {
+		this.question = question;
+	}
+
+	public String getAnswer() {
+		return answer;
+	}
+
+	public void setAnswer(String answer) {
+		this.answer = answer;
 	}
 
 	/**
@@ -199,4 +217,24 @@ public class UserAction extends ActionSupport{
 		return SUCCESS;
 	}
 	
+	/**
+	 * 得到密保问题
+	 * @return
+	 */
+	public String getSquestion(){
+		setUsername(getUsername());
+		setData(userService.getSquestion(username));
+		return SUCCESS;
+	}
+	
+	/**
+	 * 找回密码
+	 * @return
+	 */
+	public String findPasswd(){
+		setUsername(getUsername());
+		setAnswer(getAnswer());
+		setData(userService.findPasswd(username, answer));
+		return SUCCESS;
+	}
 }

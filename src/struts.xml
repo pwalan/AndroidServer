@@ -83,6 +83,20 @@
             </result>
         </action>
         
+        <action name="getSquestion" class="web.UserAction" method="getSquestion"> 
+            <result name="success" type="json" >  
+                   <param name="includeProperties">data</param>
+                   <param name="ignoreHierarchy">false</param>
+            </result>
+        </action>
+        
+        <action name="findPasswd" class="web.UserAction" method="findPasswd"> 
+            <result name="success" type="json" >  
+                   <param name="includeProperties">data</param>
+                   <param name="ignoreHierarchy">false</param>
+            </result>
+        </action>
+        
         
         <!-- *************菜谱相关的操作************** -->
         <action name="getSteps" class="web.RecipeAction" method="getSteps"> 
@@ -113,6 +127,12 @@
             </result>
         </action>
         
+        <action name="upRecipe" class="web.RecipeAction" method="upRecipe"> 
+            <result name="success" type="json" >
+                   <param name="includeProperties">data</param>
+                   <param name="ignoreHierarchy">false</param>
+            </result>
+        </action>
         
     </package>
 
