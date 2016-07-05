@@ -8,11 +8,13 @@ import dao.FavoriteDao;
 import dao.RecipeDao;
 import dao.SquestionDao;
 import dao.UserDao;
+import dao.ZanDao;
 import domain.Concern;
 import domain.Favorite;
 import domain.Recipe;
 import domain.Squestion;
 import domain.User;
+import domain.Zan;
 import domain.Comment;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -30,6 +32,7 @@ public class UserService {
 	private FavoriteDao favoriteDao;
 	private RecipeDao recipeDao;
 	private SquestionDao squestionDao;
+	private ZanDao zanDao;
 
 	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
@@ -53,6 +56,10 @@ public class UserService {
 
 	public void setSquestionDao(SquestionDao squestionDao) {
 		this.squestionDao = squestionDao;
+	}
+
+	public void setZanDao(ZanDao zanDao) {
+		this.zanDao = zanDao;
 	}
 
 	/**
@@ -187,6 +194,17 @@ public class UserService {
 			}
 		}
 		return ja.toString();
+	}
+	
+	/**
+	 * 用户点赞
+	 * @param uid
+	 * @param rid
+	 * @return
+	 */
+	public String addZan(int uid, int rid){
+		zanDao.save(new Zan(uid,rid,Time.getNow()));
+		return "add";
 	}
 	
 	/**

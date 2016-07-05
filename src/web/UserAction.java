@@ -248,6 +248,16 @@ public class UserAction extends ActionSupport{
 	}
 	
 	/**
+	 * 点赞
+	 */
+	public String addZan(){
+		setUid(getUid());
+		setRid(getRid());
+		setData(userService.addZan(uid,rid));
+		return SUCCESS;
+	}
+	
+	/**
 	 * 更改密码
 	 * @return
 	 */

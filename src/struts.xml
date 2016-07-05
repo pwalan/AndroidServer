@@ -62,6 +62,13 @@
             </result>  
         </action>
         
+        <action name="addZan" class="web.UserAction" method="addZan"> 
+            <result name="success" type="json" >  
+                   <param name="includeProperties">data</param>
+                   <param name="ignoreHierarchy">false</param>
+            </result>  
+        </action>
+        
         <action name="getUserUp" class="web.UserAction" method="getUserUp"> 
             <result name="success" type="json" >  
                    <param name="includeProperties">data</param>
