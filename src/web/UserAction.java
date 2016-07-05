@@ -19,6 +19,11 @@ public class UserAction extends ActionSupport{
 	private String head;
 	private String status;
 	private String data;
+	private String gender;
+	private String age;
+	private String city;
+	private String salary;
+	private String taste;
 	private String question;
 	private String answer;
 	
@@ -100,6 +105,46 @@ public class UserAction extends ActionSupport{
 		this.answer = answer;
 	}
 
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public String getAge() {
+		return age;
+	}
+
+	public void setAge(String age) {
+		this.age = age;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getSalary() {
+		return salary;
+	}
+
+	public void setSalary(String salary) {
+		this.salary = salary;
+	}
+
+	public String getTaste() {
+		return taste;
+	}
+
+	public void setTaste(String taste) {
+		this.taste = taste;
+	}
+
 	/**
 	 * 登录
 	 */
@@ -134,12 +179,19 @@ public class UserAction extends ActionSupport{
 		setUsername(getUsername());
 		setPasswd(getPasswd());
 		setHead(getHead());
+		setGender(getGender());
+		setAge(getAge());
+		setCity(getCity());
+		setSalary(getSalary());
+		setTaste(getTaste());
+		setQuestion(getQuestion());
+		setAnswer(getAnswer());
 		System.out.println(username+" with "+passwd+" head:"+head);
 		
 		if(username==null||passwd==null){
 			setStatus("failed");
 		}else{
-			if(userService.Register(username, passwd, head)){
+			if(userService.Register(username, passwd, head,gender,age,city,salary,taste,question,answer)){
 				setStatus("succeed");
 			}else{
 				setStatus("failed");

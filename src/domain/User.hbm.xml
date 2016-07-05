@@ -11,5 +11,10 @@
 		<property name="passwd" column="passwd" />
 		<property name="type" column="type" />
 		<property name="head" column="head" />
+		<property name="gender" column="gender" />
+		<property name="age" column="age" />
+		<property name="city" column="city" />
+		<property name="salary" column="salary" />
+		<property name="taste" column="taste" />
 	</class>
 </hibernate-mapping>

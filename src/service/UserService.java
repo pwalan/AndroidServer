@@ -82,12 +82,15 @@ public class UserService {
 	 * @param head
 	 * @return
 	 */
-	public boolean Register(String username, String passwd, String head){
+	public boolean Register(String username, String passwd, String head,String gender, String age, String city,
+			String salary, String taste, String question, String answer){
 		List<User> userlist=userDao.queryByUserName(username);
 		if(userlist.size()>0){
 			return false;
 		}else{
-			userDao.save(new User(username, passwd, 1, head));
+			userDao.save(new User(username, passwd, 1, head,gender,age,city,salary,taste));
+			userlist=userDao.queryByUserName(username);
+			squestionDao.save(new Squestion(userlist.get(0).getUid(),question,answer));
 			return true;
 		}
 	}
