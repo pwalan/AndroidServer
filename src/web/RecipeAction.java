@@ -132,4 +132,12 @@ public class RecipeAction extends ActionSupport{
 		setData(recipeService.upRecipe(uid, rname, rcontent, pic, season, stepCon, stepUrl));
 		return SUCCESS;
 	}
+	
+	/**
+	 * 获取美食圈
+	 */
+	public String getFoodCircle(){
+		setData(recipeService.getFoodCircle());
+		return SUCCESS;
+	}
 }

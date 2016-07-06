@@ -13,7 +13,8 @@ import domain.Recipe;
 public class RecipeDao extends HibernateDaoSupport{
 	
 	public List<Recipe> queryAll(){
-		return (List<Recipe>)getHibernateTemplate().find("from Recipe");
+		return (List<Recipe>)getHibernateTemplate()
+				.find("from Recipe r where r.auditResult=1 order by r.uptime desc");
 	}
 	
 	public List<Recipe> queryByRName(String rname) {

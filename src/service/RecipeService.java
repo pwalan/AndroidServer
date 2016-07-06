@@ -3,9 +3,11 @@ package service;
 import java.util.List;
 
 import dao.CommentDao;
+import dao.FavoriteDao;
 import dao.RecipeDao;
 import dao.StepsDao;
 import dao.UserDao;
+import dao.ZanDao;
 import domain.Comment;
 import domain.Recipe;
 import domain.Steps;
@@ -25,6 +27,8 @@ public class RecipeService {
 	private StepsDao stepsDao;
 	private UserDao userDao;
 	private CommentDao commentDao;
+	private FavoriteDao favoriteDao;
+	private ZanDao zanDao;
 
 	public void setRecipeDao(RecipeDao recipeDao) {
 		this.recipeDao = recipeDao;
@@ -40,6 +44,14 @@ public class RecipeService {
 
 	public void setCommentDao(CommentDao commentDao) {
 		this.commentDao = commentDao;
+	}
+
+	public void setZanDao(ZanDao zanDao) {
+		this.zanDao = zanDao;
+	}
+
+	public void setFavoriteDao(FavoriteDao favoriteDao) {
+		this.favoriteDao = favoriteDao;
 	}
 
 	/**
@@ -147,7 +159,7 @@ public class RecipeService {
 	 * @return
 	 */
 	public String upRecipe(int uid, String rname, String rcontent, String pic, String season,String stepCon, String stepUrl){
-		Recipe recipe=new Recipe(uid,season,"",rcontent,rname,Time.getNow(),pic,false);
+		Recipe recipe=new Recipe(uid,season,"",rcontent,rname,Time.getNow(),pic,"false");
 		recipeDao.save(recipe);
 		List<Recipe> list_recipe=recipeDao.queryByRName(rname);
 		if(list_recipe.size()>0){
@@ -161,5 +173,30 @@ public class RecipeService {
 		}else{
 			return "fail";
 		}
+	}
+	
+	/**
+	 * 获取美食圈
+	 * @return
+	 */
+	public String getFoodCircle(){
+		JSONArray ja=new JSONArray();
+		List<Recipe> rlist=recipeDao.queryAll();
+		for(int i=0;i<rlist.size();i++){
+			JSONObject jo = new JSONObject();
+			Recipe recipe=rlist.get(i);
+			User user=userDao.queryByUid(recipe.getUid()).get(0);
+			jo.put("username", user.getUsername());
+			jo.put("head", user.getHead());
+			jo.put("time", recipe.getUptime());
+			jo.put("rname", recipe.getRname());
+			jo.put("pic", recipe.getPic());
+			jo.put("cnum", commentDao.queryByRid(recipe.getRid()).size());
+			jo.put("fnum", favoriteDao.QueryByRid(recipe.getRid()).size());
+			jo.put("znum", zanDao.queryByRid(recipe.getRid()).size());
+			
+			ja.add(jo);
+		}
+		return ja.toString();
 	}
 }

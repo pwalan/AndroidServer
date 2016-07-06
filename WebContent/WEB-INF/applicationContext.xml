@@ -96,6 +96,8 @@
 		<property name="stepsDao" ref="stepsDao"/>
 		<property name="userDao" ref="userDao"/>
 		<property name="commentDao" ref="commentDao"/>
+		<property name="favoriteDao" ref="favoriteDao"/>
+		<property name="zanDao" ref="zanDao" />
 	</bean>
 
 	

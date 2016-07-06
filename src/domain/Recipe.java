@@ -10,8 +10,8 @@ public class Recipe {
 	private String uptime;
 	private String pic;
 	private int aid;
-	private boolean isAudit;
-	private boolean auditResult;
+	private String isAudit;
+	private int auditResult;
 	private String auditTime;
 	private String content;
 	
@@ -20,7 +20,7 @@ public class Recipe {
 	}
 	
 	public Recipe(int uid, String season, String cuisine, String info, String rname, String uptime, String pic,
-			boolean isAudit) {
+			String isAudit) {
 		super();
 		this.uid = uid;
 		this.season = season;
@@ -88,16 +88,16 @@ public class Recipe {
 	public void setAid(int aid) {
 		this.aid = aid;
 	}
-	public boolean getisAudit() {
+	public String getisAudit() {
 		return isAudit;
 	}
-	public void setisAudit(boolean isAudit) {
+	public void setisAudit(String isAudit) {
 		this.isAudit = isAudit;
 	}
-	public boolean getAuditResult() {
+	public int getAuditResult() {
 		return auditResult;
 	}
-	public void setAuditResult(boolean auditResult) {
+	public void setAuditResult(int auditResult) {
 		this.auditResult = auditResult;
 	}
 	public String getAuditTime() {

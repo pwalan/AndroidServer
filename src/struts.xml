@@ -141,6 +141,13 @@
             </result>
         </action>
         
+        <action name="getFoodCircle" class="web.RecipeAction" method="getFoodCircle"> 
+            <result name="success" type="json" >
+                   <param name="includeProperties">data</param>
+                   <param name="ignoreHierarchy">false</param>
+            </result>
+        </action>
+        
     </package>
 
 </struts>    

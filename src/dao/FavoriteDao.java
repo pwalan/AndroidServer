@@ -22,6 +22,11 @@ public class FavoriteDao extends HibernateDaoSupport{
 				.find("from Favorite f where f.uid=?",uid);	
 	}
 	
+	public List<Favorite> QueryByRid(int rid){
+		return (List<Favorite>)getHibernateTemplate()
+				.find("from Favorite f where f.rid=?",rid);	
+	}
+	
 	public Integer save(Favorite favorite) {
 		return (Integer)getHibernateTemplate().save(favorite);
 	}
