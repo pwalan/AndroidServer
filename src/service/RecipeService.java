@@ -134,9 +134,11 @@ public class RecipeService {
 		for (int i = 0; i < rlist.size(); i++) {
 			JSONObject jo = new JSONObject();
 			Recipe recipe = rlist.get(i);
-			jo.put("rname", recipe.getRname());
-			jo.put("pic", recipe.getPic());
-			ja.add(jo);
+			if(recipe.getAuditResult()==1){
+				jo.put("rname", recipe.getRname());
+				jo.put("pic", recipe.getPic());
+				ja.add(jo);
+			}
 		}
 		return ja.toString();
 	}
