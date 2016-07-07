@@ -324,7 +324,7 @@ public class UserService {
 				jo.put("pic", recipe.getPic());
 				jo.put("time",recipe.getUptime());
 				ja_succeed.add(jo);
-			}else if(recipe.getisAudit().equals(false)){
+			}else if(recipe.getisAudit().equals("false")){
 				JSONObject jo = new JSONObject();
 				jo.put("rname", recipe.getRname());
 				jo.put("pic", recipe.getPic());
