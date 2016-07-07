@@ -299,4 +299,14 @@ public class UserAction extends ActionSupport{
 		setData(userService.findPasswd(username, answer));
 		return SUCCESS;
 	}
+	
+	/**
+	 * 获取用户菜谱发布情况
+	 */
+	public String getUpSituation(){
+		setUid(getUid());
+		setData(userService.getUpSituation(uid));
+		return SUCCESS;
+	}
+	
 }

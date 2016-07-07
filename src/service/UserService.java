@@ -224,17 +224,21 @@ public class UserService {
 			}
 		}
 		jo_up.put("conNum", conNum);
-		jo_up.put("recNum", rlist.size());
+		int recNum=0;
 		//获取具体发布的菜谱
 		JSONArray ja=new JSONArray();
 		for(int i=0;i<rlist.size();i++){
-			JSONObject jo = new JSONObject();
-			jo.put("rname", rlist.get(i).getRname());
-			jo.put("pic", rlist.get(i).getPic());
-			jo.put("time",rlist.get(i).getUptime());
-			ja.add(jo);
+			if(rlist.get(i).getAuditResult()==1){
+				JSONObject jo = new JSONObject();
+				jo.put("rname", rlist.get(i).getRname());
+				jo.put("pic", rlist.get(i).getPic());
+				jo.put("time",rlist.get(i).getUptime());
+				ja.add(jo);
+				recNum++;
+			}
 		}
 		jo_up.put("ups", ja.toString());
+		jo_up.put("recNum", recNum);
 		return jo_up.toString();
 	}
 	
@@ -299,5 +303,44 @@ public class UserService {
 			}
 		}
 		return "failed";
+	}
+	
+	/**
+	 * 获取用户发布情况（已发布、审核中、未发布）
+	 * @param uid
+	 * @return
+	 */
+	public String getUpSituation(int uid){
+		JSONObject jo_data=new JSONObject();
+		JSONArray ja_succeed=new JSONArray();
+		JSONArray ja_audit=new JSONArray();
+		JSONArray ja_failed=new JSONArray();
+		List<Recipe> rlist=recipeDao.queryByUid(uid);
+		for(int i=0;i<rlist.size();i++){
+			Recipe recipe=rlist.get(i);
+			if(recipe.getAuditResult()==1){
+				JSONObject jo = new JSONObject();
+				jo.put("rname", recipe.getRname());
+				jo.put("pic", recipe.getPic());
+				jo.put("time",recipe.getUptime());
+				ja_succeed.add(jo);
+			}else if(recipe.getisAudit().equals(false)){
+				JSONObject jo = new JSONObject();
+				jo.put("rname", recipe.getRname());
+				jo.put("pic", recipe.getPic());
+				jo.put("time",recipe.getUptime());
+				ja_audit.add(jo);
+			}else if(recipe.getisAudit().equals("true")&&recipe.getAuditResult()==0){
+				JSONObject jo = new JSONObject();
+				jo.put("rname", recipe.getRname());
+				jo.put("pic", recipe.getPic());
+				jo.put("time",recipe.getUptime());
+				ja_failed.add(jo);
+			}
+		}
+		jo_data.put("succeed", ja_succeed.toString());
+		jo_data.put("audit", ja_audit.toString());
+		jo_data.put("failed", ja_failed.toString());
+		return jo_data.toString();
 	}
 }

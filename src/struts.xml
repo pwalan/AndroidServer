@@ -19,7 +19,7 @@
         <global-results>
             <result name="error">/Error.jsp</result>
         </global-results>
-        <!-- 用户相关操作 -->
+        <!-- ****************用户相关操作********************** -->
         <action name="login" class="web.UserAction" method="login"> 
             <result name="success" type="json" >  
                    <param name="includeProperties">status,uid,head</param>
@@ -104,6 +104,13 @@
             </result>
         </action>
         
+        <action name="getUpSituation" class="web.UserAction" method="getUpSituation"> 
+            <result name="success" type="json" >  
+                   <param name="includeProperties">data</param>
+                   <param name="ignoreHierarchy">false</param>
+            </result>
+        </action>
+        
         
         <!-- *************菜谱相关的操作************** -->
         <action name="getSteps" class="web.RecipeAction" method="getSteps"> 
@@ -142,6 +149,13 @@
         </action>
         
         <action name="getFoodCircle" class="web.RecipeAction" method="getFoodCircle"> 
+            <result name="success" type="json" >
+                   <param name="includeProperties">data</param>
+                   <param name="ignoreHierarchy">false</param>
+            </result>
+        </action>
+        
+        <action name="searchRecipe" class="web.RecipeAction" method="searchRecipe"> 
             <result name="success" type="json" >
                    <param name="includeProperties">data</param>
                    <param name="ignoreHierarchy">false</param>

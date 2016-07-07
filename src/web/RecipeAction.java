@@ -140,4 +140,14 @@ public class RecipeAction extends ActionSupport{
 		setData(recipeService.getFoodCircle());
 		return SUCCESS;
 	}
+	
+	/**
+	 * 搜索菜谱
+	 * @return
+	 */
+	public String searchRecipe(){
+		setRname(getRname());
+		setData(recipeService.searchRecipe(rname));
+		return SUCCESS;
+	}
 }
