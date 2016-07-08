@@ -59,13 +59,13 @@ public class RecipeService {
 	 * 获取菜谱详情及相关评论
 	 * 
 	 * @param rname
+	 * @param uid
 	 * @return
 	 */
-	public String getSteps(String rname) {
-		System.out.println(rname);
+	public String getSteps(String rname, int uid) {
 		JSONObject jo_details = new JSONObject();
 
-		List<Recipe> list_recipe = recipeDao.queryByRName(rname);
+		List<Recipe> list_recipe = recipeDao.queryByRNameAndUid(rname,uid);
 		System.out.println("list_recipe size: " + list_recipe.size());
 		if (list_recipe == null || list_recipe.size() == 0) {
 			return jo_details.toString();
@@ -137,6 +137,7 @@ public class RecipeService {
 			if(recipe.getAuditResult()==1){
 				jo.put("rname", recipe.getRname());
 				jo.put("pic", recipe.getPic());
+				jo.put("uid", recipe.getUid());
 				ja.add(jo);
 			}
 		}
@@ -194,6 +195,7 @@ public class RecipeService {
 			Recipe recipe = rlist.get(i);
 			User user = userDao.queryByUid(recipe.getUid()).get(0);
 			jo.put("username", user.getUsername());
+			jo.put("uid", user.getUid());
 			jo.put("head", user.getHead());
 			jo.put("time", recipe.getUptime());
 			jo.put("rname", recipe.getRname());
@@ -218,10 +220,13 @@ public class RecipeService {
 		for (int i = 0; i < rlist.size(); i++) {
 			JSONObject jo = new JSONObject();
 			Recipe recipe = rlist.get(i);
-			jo.put("rname", recipe.getRname());
-			jo.put("pic", recipe.getPic());
-			jo.put("time", recipe.getUptime());
-			ja.add(jo);
+			if(recipe.getAuditResult()==1){
+				jo.put("rname", recipe.getRname());
+				jo.put("pic", recipe.getPic());
+				jo.put("time", recipe.getUptime());
+				jo.put("uid",recipe.getUid());
+				ja.add(jo);
+			}
 		}
 		return ja.toString();
 	}

@@ -86,7 +86,8 @@ public class RecipeAction extends ActionSupport{
 	 */
 	public String getSteps(){
 		setRname(getRname());
-		setData(recipeService.getSteps(rname));
+		setUid(getUid());
+		setData(recipeService.getSteps(rname,uid));
 		return SUCCESS;
 	}
 	
