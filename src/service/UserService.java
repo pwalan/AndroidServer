@@ -143,6 +143,7 @@ public class UserService {
 				jo.put("rname", recipe.getRname());
 				jo.put("time", flist.get(i).getTime());
 				jo.put("pic", recipe.getPic());
+				jo.put("uid", recipe.getUid());
 				ja_favorite.add(jo);
 			}
 		}
