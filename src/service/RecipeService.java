@@ -3,13 +3,18 @@ package service;
 import java.util.List;
 
 import dao.CommentDao;
+import dao.ConcernDao;
 import dao.FavoriteDao;
 import dao.RecipeDao;
+import dao.RecommendedDao;
 import dao.StepsDao;
 import dao.UserDao;
 import dao.ZanDao;
 import domain.Comment;
+import domain.Concern;
+import domain.Favorite;
 import domain.Recipe;
+import domain.Recommended;
 import domain.Steps;
 import domain.User;
 import net.sf.json.JSONArray;
@@ -28,8 +33,10 @@ public class RecipeService {
 	private StepsDao stepsDao;
 	private UserDao userDao;
 	private CommentDao commentDao;
+	private ConcernDao concernDao;
 	private FavoriteDao favoriteDao;
 	private ZanDao zanDao;
+	private RecommendedDao recommendedDao;
 
 	public void setRecipeDao(RecipeDao recipeDao) {
 		this.recipeDao = recipeDao;
@@ -47,12 +54,20 @@ public class RecipeService {
 		this.commentDao = commentDao;
 	}
 
+	public void setConcernDao(ConcernDao concernDao) {
+		this.concernDao = concernDao;
+	}
+
 	public void setZanDao(ZanDao zanDao) {
 		this.zanDao = zanDao;
 	}
 
 	public void setFavoriteDao(FavoriteDao favoriteDao) {
 		this.favoriteDao = favoriteDao;
+	}
+
+	public void setRecommendedDao(RecommendedDao recommendedDao) {
+		this.recommendedDao = recommendedDao;
 	}
 
 	/**
@@ -65,7 +80,7 @@ public class RecipeService {
 	public String getSteps(String rname, int uid) {
 		JSONObject jo_details = new JSONObject();
 
-		List<Recipe> list_recipe = recipeDao.queryByRNameAndUid(rname,uid);
+		List<Recipe> list_recipe = recipeDao.queryByRNameAndUid(rname, uid);
 		System.out.println("list_recipe size: " + list_recipe.size());
 		if (list_recipe == null || list_recipe.size() == 0) {
 			return jo_details.toString();
@@ -126,6 +141,174 @@ public class RecipeService {
 	}
 
 	/**
+	 * 主页推荐思路： 1.关注推荐 1.1获取用户的关注列表 1.2获取关注人发布的菜谱 1.3取出最新菜谱（如果有），并记录下菜ID
+	 * 1.4控制所取菜谱数<=5 2.收藏推荐 2.1取出用户收藏的菜谱的发布人的最新菜谱，且与已记录的菜ID比较，防止重复 3.季节推荐
+	 * 3.1取出符合季节要求的菜谱，在保证不重复的前提下。
+	 */
+	public String getHomeRecipes1(int uid, String season) {// season用于季节推荐
+		JSONArray ja = new JSONArray(); // 用于返回json结果
+		// 关注推荐部分
+
+		List<Concern> clist = concernDao.queryByUid(uid);
+
+		int[] rec = new int[10];// 记录已选取的菜谱ID
+		int reclen = 0; // 记录rec的长度
+
+		for (int i = 0; i < clist.size(); i++) {
+			Concern concern = clist.get(i);
+			if (!concern.getIsValid().equals("1"))
+				continue; // 保证关注有效
+
+			int cid = concern.getCid();
+			// System.out.println(cid);
+			List<Recipe> rlist = recipeDao.queryByUid(cid);
+			// System.out.println("recipe size="+rlist.size());
+			if (rlist.size() > 0) {
+				Recipe recipe = rlist.get(rlist.size() - 1);// 序号最大的菜谱为最新菜谱
+				JSONObject jo = new JSONObject();
+				jo.put("rname", recipe.getRname()); // 取出菜谱名称
+				jo.put("pic", recipe.getPic()); // 取出菜谱样图
+				ja.add(jo);
+				rec[reclen++] = recipe.getRid(); // 增加菜谱记录
+				if (reclen >= 5)
+					break; // 控制取出的菜谱数量
+			}
+
+		}
+
+		if (reclen >= 5)
+			return ja.toString();
+		// 收藏推荐
+		List<Favorite> flist = favoriteDao.QueryByUid(uid);
+		boolean again;// 作为菜谱是否重复的标记
+		int rid;
+		for (int i = 0; i < flist.size(); i++) {
+			Favorite favorite = flist.get(i);
+			int f_uid = favorite.getUid();
+
+			List<Recipe> rlist = recipeDao.queryByUid(f_uid);
+			Recipe recipe = new Recipe();
+			JSONObject jo = new JSONObject();
+			if (rlist.size() > 0 && reclen < 5) {
+				recipe = rlist.get(rlist.size() - 1);
+				jo.put("rname", recipe.getRname());
+				jo.put("pic", recipe.getPic());
+				rid = recipe.getRid();
+				again = false;// 重置标记
+				for (int j = 0; j < reclen; j++)
+					if (rid == rec[j]) {
+						again = true;// 确认重复
+						break;
+					}
+				if (!again) {
+					ja.add(jo);
+					rec[reclen++] = rid;// 增加记录
+				}
+			}
+		}
+
+		if (ja.size() < 5) {
+			// 季节推荐
+			List<Recipe> rlist = recipeDao.queryBySeason(season);
+			for (int i = 0; i < rlist.size(); i++) {
+				JSONObject jo = new JSONObject();
+				Recipe recipe = rlist.get(i);
+				if (reclen < 5) {
+					jo.put("rname", recipe.getRname());
+					jo.put("pic", recipe.getPic());
+					rid = recipe.getRid();
+					again = false;
+					for (int j = 0; j < reclen; j++)
+						if (rid == rec[j]) {
+							again = true;
+							break;
+						}
+					if (!again) {
+						ja.add(jo);
+						rec[reclen++] = rid;
+					}
+				}
+
+			}
+		}
+
+		return ja.toString();
+
+	}
+
+	/*
+	 * 主页推荐方法2：人口统计学算法 1.取出用户信息,取出recommended表中，此用户的记录，更新有效期，将到期的菜谱删除
+	 * 2.在user表中搜索与其相似度高的用户，取出他们的个人菜谱和收藏菜谱 3.将收罗的菜谱加入recommend表 4.返回2中结果
+	 */
+	public String getHomeRecipes2(int uid) {
+		JSONArray ja = new JSONArray(); // 用于返回json结果
+		// 更新此用户的推荐列表(recommmend表)中的validity
+		List<Recommended> reclist = recommendedDao.queryByUid(uid);
+		for (int i = 0; i < reclist.size(); i++) {
+			Recommended rec = reclist.get(i);
+			if (rec.getValidity() == 1)
+				recommendedDao.delete(rec);
+			else {
+				rec.setValidity(rec.getValidity() - 1);
+				recommendedDao.update(rec);
+			}
+		}
+		// 取出此用户信息
+		List<User> ulist = userDao.queryByUid(uid);
+		if (ulist.size() <= 0)
+			return "";
+		User user = ulist.get(0);
+		// 取出相似用户,依次按照相似度最高，次高排列，且默认这些用户的菜谱已经足够满足首页推荐的需求
+		List<User> ulist2 = userDao.queryBySimilar(user.getGender(), user.getAge(), user.getSalary(), user.getCity(),
+				user.getUid());
+		List<User> ulist3 = userDao.queryBySimilar2(user.getGender(), user.getAge(), user.getSalary(), user.getCity());
+		List<User> ulist4 = userDao.queryBySimilar3(user.getGender(), user.getAge(), user.getSalary(), user.getCity());
+		for (int i = 0; i < ulist3.size(); i++)
+			ulist2.add(ulist3.get(i));
+		for (int i = 0; i < ulist4.size(); i++)
+			ulist2.add(ulist4.get(i));
+		for (int i = 0; i < ulist2.size(); i++) {
+			User similarUser = ulist2.get(i);
+			if (ja.size() >= 10)
+				break;
+			// 获取相似用户的个人菜谱
+			List<Recipe> rlist = recipeDao.queryByUid(similarUser.getUid());
+			for (int j = rlist.size() - 1; j >= 0; j--) {
+				if (ja.size() >= 10)
+					break;
+				Recipe recipe = rlist.get(j);
+				Recommended recommended = new Recommended(user.getUid(), recipe.getRid(), 7);
+				JSONObject jo = new JSONObject();
+				if (recommendedDao.queryByRid(recipe.getRid()).size() <= 0) {
+					recommendedDao.save(recommended);
+					jo.put("rname", recipe.getRname());
+					jo.put("pic", recipe.getPic());
+					ja.add(jo);
+				}
+			}
+			// 获取相似用户的收藏菜谱
+			List<Favorite> flist = favoriteDao.QueryByUid(user.getUid());
+			for (int j = 0; j < flist.size(); j++) {
+				if (ja.size() >= 10)
+					break;
+				Favorite favorite = flist.get(j);
+				int rid = favorite.getRid();
+				rlist = recipeDao.queryByRid(rid);
+				Recipe recipe = rlist.get(0);
+				Recommended recommended = new Recommended(user.getUid(), recipe.getRid(), 7);
+				JSONObject jo = new JSONObject();
+				if (recommendedDao.queryByRid(recipe.getRid()).size() <= 0) {
+					recommendedDao.save(recommended);
+					jo.put("rname", recipe.getRname());
+					jo.put("pic", recipe.getPic());
+					ja.add(jo);
+				}
+			}
+		}
+		return ja.toString();
+	}
+
+	/**
 	 * 获取季节菜谱
 	 */
 	public String getSeasonRecipes(String season) {
@@ -134,7 +317,7 @@ public class RecipeService {
 		for (int i = 0; i < rlist.size(); i++) {
 			JSONObject jo = new JSONObject();
 			Recipe recipe = rlist.get(i);
-			if(recipe.getAuditResult()==1){
+			if (recipe.getAuditResult() == 1) {
 				jo.put("rname", recipe.getRname());
 				jo.put("pic", recipe.getPic());
 				jo.put("uid", recipe.getUid());
@@ -211,6 +394,7 @@ public class RecipeService {
 
 	/**
 	 * 搜索菜谱
+	 * 
 	 * @param rname
 	 * @return
 	 */
@@ -220,11 +404,11 @@ public class RecipeService {
 		for (int i = 0; i < rlist.size(); i++) {
 			JSONObject jo = new JSONObject();
 			Recipe recipe = rlist.get(i);
-			if(recipe.getAuditResult()==1){
+			if (recipe.getAuditResult() == 1) {
 				jo.put("rname", recipe.getRname());
 				jo.put("pic", recipe.getPic());
 				jo.put("time", recipe.getUptime());
-				jo.put("uid",recipe.getUid());
+				jo.put("uid", recipe.getUid());
 				ja.add(jo);
 			}
 		}
