@@ -42,6 +42,12 @@ public class RecipeDao extends HibernateDaoSupport{
 				.find("from Recipe r where r.season like '%"+season+"%'");
 	}
 	
+	public List<Recipe> searchByRName(String rname) {
+		return (List<Recipe>)getHibernateTemplate()
+				.find("from Recipe r where r.rname like '%"+rname+"%'");
+	}
+	
+	
 	public Recipe get(int rid){
 		return getHibernateTemplate().get(Recipe.class,rid);
 	}

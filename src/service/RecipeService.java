@@ -124,6 +124,34 @@ public class RecipeService {
 		return jo_details.toString();
 	}
 
+	public String getSeason(){
+		String time=new Time().getNow();
+		int month=(time.charAt(5)-'0')*10+(time.charAt(6)-'0');
+		if ((month>=3)&&(month<=5))
+				return"春";
+		else if((month>=3)&&(month<=5))
+			return "夏";
+		else if ((month>=3)&&(month<=5))
+			return "秋";
+		else return "冬";
+	}
+	
+	/**
+	 * 获取首页推荐菜谱
+	 */
+	public String getHomeRecipes(int uid){
+		if (uid==0){//若此用户为游客
+			return getHomeRecipes();
+		}else{	//此用户已经注册
+			List<User> ulist = userDao.queryByUid(uid);
+			if (ulist.size() <= 0)	return getHomeRecipes();
+			User user = ulist.get(0);
+			if ((user.getAge()!=null)&&(user.getCity()!=null)&&(user.getGender()!=null)&&(user.getSalary()!=null)&&(user.getTaste()!=null))
+				return getHomeRecipes2(uid);
+			else return getHomeRecipes1(uid,getSeason());
+		}
+	}
+	
 	/**
 	 * 获取首页推荐菜谱
 	 */
@@ -400,7 +428,7 @@ public class RecipeService {
 	 */
 	public String searchRecipe(String rname) {
 		JSONArray ja = new JSONArray();
-		List<Recipe> rlist = recipeDao.queryByRName(rname);
+		List<Recipe> rlist = recipeDao.searchByRName(rname);
 		for (int i = 0; i < rlist.size(); i++) {
 			JSONObject jo = new JSONObject();
 			Recipe recipe = rlist.get(i);
