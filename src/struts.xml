@@ -15,6 +15,14 @@
     <!-- 指定每次配置文件更改后，自动重新加载 -->
     <constant name="struts.configuration.xml.reload" value="false" />
 
+	<package name="default" namespace="/" extends="struts-default">
+	
+		<action name="recipeShare" class="web.ShareAction">
+			<result name="success"> share.jsp </result>
+		</action>
+
+	</package>
+
 	<package name="AndroidServer" extends="json-default">
         <global-results>
             <result name="error">/Error.jsp</result>
