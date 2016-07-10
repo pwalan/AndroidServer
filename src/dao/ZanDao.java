@@ -21,6 +21,13 @@ public class ZanDao extends HibernateDaoSupport{
 				.find("from Zan z where z.rid=?", rid);
 	}
 	
+	public int countZan(int rid) {
+		 String hql = "select count(*) from Zan as z where z.rid="+rid;
+		  Long count = (Long)getHibernateTemplate().find(hql).listIterator().next();
+		  return count.intValue();
+
+	}
+	
 	public Integer save(Zan zan) {
 		return (Integer)getHibernateTemplate().save(zan);
 	}

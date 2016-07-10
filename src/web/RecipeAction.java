@@ -95,7 +95,8 @@ public class RecipeAction extends ActionSupport{
 	 * 获取首页推荐
 	 */
 	public String getHomeRecipes(){
-		setData(recipeService.getHomeRecipes());
+		setUid(getUid());
+		setData(recipeService.getHomeRecipes(uid));
 		return SUCCESS;
 	}
 	

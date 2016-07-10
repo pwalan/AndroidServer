@@ -85,6 +85,10 @@
 		    <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="rankingDao" class="dao.RankingDao">
+		    <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<bean id="userService" class="service.UserService" >
 		<property name="userDao" ref="userDao"/>
 		<property name="commentDao" ref="commentDao"/>
@@ -104,6 +108,7 @@
 		<property name="favoriteDao" ref="favoriteDao"/>
 		<property name="zanDao" ref="zanDao" />
 		<property name="recommendedDao" ref="recommendedDao"/>
+		<property name="rankingDao" ref="rankingDao" />
 	</bean>
 
 	
