@@ -20,7 +20,7 @@ public class Recipe {
 	}
 	
 	public Recipe(int uid, String season, String cuisine, String info, String rname, String uptime, String pic,
-			String isAudit) {
+			int aid,String isAudit) {
 		super();
 		this.uid = uid;
 		this.season = season;
@@ -29,6 +29,7 @@ public class Recipe {
 		this.rname = rname;
 		this.uptime = uptime;
 		this.pic = pic;
+		this.aid=aid;
 		this.isAudit = isAudit;
 	}
 

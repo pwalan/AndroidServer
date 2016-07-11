@@ -445,7 +445,7 @@ public class RecipeService {
 	 */
 	public String upRecipe(int uid, String rname, String rcontent, String pic, String season, String stepCon,
 			String stepUrl) {
-		Recipe recipe = new Recipe(uid, season, "", rcontent, rname, Time.getNow(), pic, "false");
+		Recipe recipe = new Recipe(uid, season, "", rcontent, rname, Time.getNow(), pic, 0, "false");
 		recipeDao.save(recipe);
 		List<Recipe> list_recipe = recipeDao.queryByRName(rname);
 		if (list_recipe.size() > 0) {
