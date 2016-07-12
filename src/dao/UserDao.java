@@ -33,21 +33,17 @@ public class UserDao extends HibernateDaoSupport {
 		getHibernateTemplate().update(user);
 	}
 
-	// 此方法搜索的结果相似度最高（性别，年龄段，工薪段，城市完成相同）
-	public List<User> queryBySimilar(String gender, String age, String salary, String city, int uid) {
-		return (List<User>) getHibernateTemplate().find("from User u where u.gender=" + gender + "and u.age=" + age
-				+ "and u.salary=" + salary + "and u.city=" + city + "and u.uid!=" + uid);
-	}
+	// 此方法搜索的结果相似度最高（性别，年龄段，工薪段完成相同）
+		public List<User> queryBySimilar(String gender, String age, String salary, int uid) {
+			return (List<User>) getHibernateTemplate().find("from User u where u.gender='" + gender + "' and u.age='" + age
+					+ "' and u.salary='" + salary + "' and u.uid!=" + uid);
+		}
 
-	// 此方法搜索的结果相似度次高（性别，年龄段，工薪段完成相同，城市不同）
-	public List<User> queryBySimilar2(String gender, String age, String salary, String city) {
-		return (List<User>) getHibernateTemplate().find("from User u where u.gender=" + gender + "and u.age=" + age
-				+ "and u.salary=" + salary + "and u.city!=" + city);
-	}
 
-	// 此方法搜索的结果相似度次高（性别，工薪段，城市完成相同，年龄段不同）
-	public List<User> queryBySimilar3(String gender, String age, String salary, String city) {
-		return (List<User>) getHibernateTemplate().find("from User u where u.gender=" + gender + "and u.age!=" + age
-				+ "and u.salary=" + salary + "and u.city=" + city);
-	}
+
+		// 此方法搜索的结果相似度次高（年龄段，工薪段完成相同，性别不同）
+		public List<User> queryBySimilar1(String gender, String age, String salary) {
+			return (List<User>) getHibernateTemplate().find("from User u where u.gender!='" + gender + "' and u.age='" + age
+					+ "' and u.salary='" + salary +"'");
+		}
 }

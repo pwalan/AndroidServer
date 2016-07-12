@@ -1,6 +1,7 @@
 package service;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.text.ParseException;
@@ -34,7 +35,7 @@ import utils.Time;
  */
 public class RecipeService {
 	private static String date="2016-07-06 13:31:40";// 点赞排行榜上次更新时间
-	private static int TOPlimit=10;					//排行榜菜谱数量限制
+	private static int TOPlimit=20;					//排行榜菜谱数量限制
 	private static int MaxRecipe=10000;				//假设菜谱量的上限是10000
 	private RecipeDao recipeDao;
 	private StepsDao stepsDao;
@@ -45,6 +46,7 @@ public class RecipeService {
 	private ZanDao zanDao;
 	private RecommendedDao recommendedDao;
 	private RankingDao rankingDao;
+	private List<Recipe> recipes;	//存储主页推荐菜谱结果
 
 	public void setRankingDao(RankingDao rankingDao) {
 		this.rankingDao = rankingDao;
@@ -152,6 +154,7 @@ public class RecipeService {
 	 * 获取首页推荐菜谱
 	 */
 	public String getHomeRecipes(int uid){
+		recipes=new ArrayList<Recipe>();
 		if (uid>0){//若此用户已注册
 			List<User> ulist = userDao.queryByUid(uid);
 			if (ulist.size() <= 0)	return getHomeRecipes0();
@@ -191,13 +194,21 @@ public class RecipeService {
 			 int x;
 			 for (int i=1;i<=TOPlimit;i++){
 				 x=0;
+				 if (i>max) break;
 				 for (int j=1;j<max;j++){
 					 if (arr[x]<arr[j])  x=j;
 				 }
-				 Ranking ranking=rankingDao.queryById(i).get(0);
-				 ranking.setRid(ridarr[x]);
-				 rankingDao.update(ranking);//将此菜放入排行榜
-				 arr[x]=-1;	//因为此菜已经添加入排行榜，将其点赞数设为0，防止再次放入
+				 if (rankingDao.queryById(i).size()>0){
+					 Ranking ranking=rankingDao.queryById(i).get(0);
+					 ranking.setRid(ridarr[x]);
+					 rankingDao.update(ranking);//将此菜放入排行榜
+				 }else{
+					 Ranking ranking=new Ranking();
+					 ranking.setId(i);
+					 ranking.setRid(ridarr[x]);
+					 rankingDao.save(ranking);
+				 }
+				 arr[x]=-1;	//因为此菜已经添加入排行榜，将其点赞数设为-1，防止再次放入
 			 }
 			
 		} catch (ParseException e) {
@@ -219,14 +230,11 @@ public class RecipeService {
 				List<Recipe> rlist = recipeDao.Audit_queryByRid(ranking.getRid());
 				JSONObject jo = new JSONObject();
 				Recipe recipe = rlist.get(0);
-				jo.put("rname", recipe.getRname());
-				jo.put("pic", recipe.getPic());
-				jo.put("uid", recipe.getUid());
-				ja.add(jo);
+				recipes.add(recipe);
 			}else break;
 					
 		}
-		return ja.toString();
+		return resultDeal();
 	}
 
 	/**
@@ -254,20 +262,16 @@ public class RecipeService {
 			// System.out.println("recipe size="+rlist.size());
 			if (rlist.size() > 0) {
 				Recipe recipe = rlist.get(rlist.size() - 1);// 序号最大的菜谱为最新菜谱
-				JSONObject jo = new JSONObject();
-				jo.put("rname", recipe.getRname()); // 取出菜谱名称
-				jo.put("pic", recipe.getPic()); // 取出菜谱样图
-				jo.put("uid", recipe.getUid());
-				ja.add(jo);
+				recipes.add(recipe);
 				rec[reclen++] = recipe.getRid(); // 增加菜谱记录
-				if (reclen >= 5)
+				if (reclen >= 10)
 					break; // 控制取出的菜谱数量
 			}
 
 		}
 
-		if (reclen >= 5)
-			return ja.toString();
+		if (reclen >= 10)
+			return resultDeal();
 		// 收藏推荐
 		List<Favorite> flist = favoriteDao.QueryByUid(uid);
 		boolean again;// 作为菜谱是否重复的标记
@@ -276,14 +280,12 @@ public class RecipeService {
 			Favorite favorite = flist.get(i);
 			int f_uid = favorite.getUid();
 
+
 			List<Recipe> rlist = recipeDao.Audit_queryByUid(f_uid);
 			Recipe recipe = new Recipe();
 			JSONObject jo = new JSONObject();
-			if (rlist.size() > 0 && reclen < 5) {
+			if (rlist.size() > 0 && reclen < 10) {
 				recipe = rlist.get(rlist.size() - 1);
-				jo.put("rname", recipe.getRname());
-				jo.put("pic", recipe.getPic());
-				jo.put("uid", recipe.getUid());
 				rid = recipe.getRid();
 				again = false;// 重置标记
 				for (int j = 0; j < reclen; j++)
@@ -292,39 +294,14 @@ public class RecipeService {
 						break;
 					}
 				if (!again) {
-					ja.add(jo);
+					recipes.add(recipe);
 					rec[reclen++] = rid;// 增加记录
 				}
+				
 			}
 		}
 
-		if (ja.size() < 5) {
-			// 季节推荐
-			List<Recipe> rlist = recipeDao.Audit_queryBySeason(season);
-			for (int i = 0; i < rlist.size(); i++) {
-				JSONObject jo = new JSONObject();
-				Recipe recipe = rlist.get(i);
-				if (reclen < 5) {
-					jo.put("rname", recipe.getRname());
-					jo.put("pic", recipe.getPic());
-					jo.put("uid", recipe.getUid());
-					rid = recipe.getRid();
-					again = false;
-					for (int j = 0; j < reclen; j++)
-						if (rid == rec[j]) {
-							again = true;
-							break;
-						}
-					if (!again) {
-						ja.add(jo);
-						rec[reclen++] = rid;
-					}
-				}
-
-			}
-		}
-
-		return ja.toString();
+		return resultDeal();
 
 	}
 
@@ -351,14 +328,12 @@ public class RecipeService {
 			return "";
 		User user = ulist.get(0);
 		// 取出相似用户,依次按照相似度最高，次高排列，且默认这些用户的菜谱已经足够满足首页推荐的需求
-		List<User> ulist2 = userDao.queryBySimilar(user.getGender(), user.getAge(), user.getSalary(), user.getCity(),
+		List<User> ulist2 = userDao.queryBySimilar(user.getGender(), user.getAge(), user.getSalary(), 
 				user.getUid());
-		List<User> ulist3 = userDao.queryBySimilar2(user.getGender(), user.getAge(), user.getSalary(), user.getCity());
-		List<User> ulist4 = userDao.queryBySimilar3(user.getGender(), user.getAge(), user.getSalary(), user.getCity());
+		List<User> ulist3 = userDao.queryBySimilar1(user.getGender(), user.getAge(), user.getSalary());
 		for (int i = 0; i < ulist3.size(); i++)
 			ulist2.add(ulist3.get(i));
-		for (int i = 0; i < ulist4.size(); i++)
-			ulist2.add(ulist4.get(i));
+		
 		for (int i = 0; i < ulist2.size(); i++) {
 			User similarUser = ulist2.get(i);
 			if (ja.size() >= 10)
@@ -366,17 +341,14 @@ public class RecipeService {
 			// 获取相似用户的个人菜谱
 			List<Recipe> rlist = recipeDao.Audit_queryByUid(similarUser.getUid());
 			for (int j = rlist.size() - 1; j >= 0; j--) {
-				if (ja.size() >= 10)
+				if (recipes.size() >= 10)
 					break;
 				Recipe recipe = rlist.get(j);
 				Recommended recommended = new Recommended(user.getUid(), recipe.getRid(), 7);
 				JSONObject jo = new JSONObject();
 				if (recommendedDao.queryByRid(recipe.getRid()).size() <= 0) {
 					recommendedDao.save(recommended);
-					jo.put("rname", recipe.getRname());
-					jo.put("pic", recipe.getPic());
-					jo.put("uid", recipe.getUid());
-					ja.add(jo);
+					recipes.add(recipe);
 				}
 			}
 			// 获取相似用户的收藏菜谱
@@ -392,16 +364,42 @@ public class RecipeService {
 				JSONObject jo = new JSONObject();
 				if (recommendedDao.queryByRid(recipe.getRid()).size() <= 0) {
 					recommendedDao.save(recommended);
-					jo.put("rname", recipe.getRname());
-					jo.put("pic", recipe.getPic());
-					jo.put("uid", recipe.getUid());
-					ja.add(jo);
+					recipes.add(recipe);
 				}
 			}
 		}
+		return resultDeal();
+	}
+
+	String resultDeal(){
+		if (recipes.size()<10){
+			int size=recipes.size();
+			int j=1;
+			while (recipes.size()<10){
+				List<Ranking> ranklist=rankingDao.queryById(j);
+				Ranking ranking=ranklist.get(0);
+				int rid=ranking.getRid();
+				int i;
+				for (i=0;i<size;i++){
+					if (rid==recipes.get(i).getRid()) break;
+				}
+				if (i==size){
+					Recipe recipe=recipeDao.get(rid);
+					recipes.add(recipe);
+				}
+				j=j+1;
+			}
+		}
+		JSONArray ja=new JSONArray();
+		for (int i=0;i<10;i++){
+			JSONObject jo=new JSONObject();
+			jo.put("rname", recipes.get(i).getRname());
+			jo.put("pic", recipes.get(i).getPic());
+			jo.put("uid", recipes.get(i).getUid());
+			ja.add(jo);
+		}
 		return ja.toString();
 	}
-	
 	/****************************首页推荐********************************/
 
 	/**

@@ -7,8 +7,8 @@
 <hibernate-mapping>
     <class name="domain.Ranking" table="ranking" catalog="food">
         <id name="id" type="java.lang.Integer">
-            <column name="id" />
-            <generator class="identity" />
+            <!--<column name="id" /> -->
+            <!-- <generator class="identity" />-->
         </id>
       
         <property name="rid" column="rid" />
